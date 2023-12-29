@@ -58,7 +58,9 @@ if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&
 
 
 if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-    $imagePath = $targetFile;
+    $targetDir1 = "./uploads/users";
+    $targetFile1 = $targetDir1 . basename($_FILES["image"]["name"]);
+    $imagePath = $targetFile1;
 
     if ($_POST['major_id'] == 'other') {
         // Get the custom_major input value
@@ -86,7 +88,7 @@ if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
     }
 
     // Insert into user_login table
-    $loginQuery = "INSERT INTO user_login (email, password) VALUES ('$email', '$password')";
+    $loginQuery = "INSERT INTO user_login (email, password,role) VALUES ('$email', '$password',1)";
     if ($conn->query($loginQuery) === TRUE) {
         // Get the user_login ID
         $loginId = $conn->insert_id;

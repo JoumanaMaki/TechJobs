@@ -14,8 +14,9 @@
 //include "./navbar.php";
 
 include "./db_config/connection.php";
+session_start();
 
-if(isset($_SESSION['login_id']) == true){
+if(isset($_SESSION['login_id'])){
     $src = $_SESSION['image'];
 }
 
@@ -23,9 +24,9 @@ if(isset($_SESSION['login_id']) == true){
     <style>
 
 
-.dark-mode-toggle {
-          cursor: pointer;
-      }
+      .dark-mode-toggle {
+                cursor: pointer;
+            }
       nav.light-mode{
          background-color: #D4EAF4;
       }
@@ -116,7 +117,7 @@ if(isset($_SESSION['login_id']) == true){
     </div>
 
 
-    <?php if (!empty($avatarSrc)) : ?>
+    <?php if (!empty($src)) : ?>
                 <a class="navbar-brand" href="#">
                      <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> 
                   </a>   
@@ -148,10 +149,10 @@ $(document).ready(function(){
         var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
         Image.attr('src', newsrc);
 
-        var imageElement = $('#image');
-            var currentSrc = imageElement.attr('src');
-            var newSrc = currentSrc.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
-            imageElement.attr('src', newSrc);
+        // var imageElement = $('#image');
+        //     var currentSrc = imageElement.attr('src');
+        //     var newSrc = currentSrc.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
+        //     imageElement.attr('src', newSrc);
     });
 });
 </script>
