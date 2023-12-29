@@ -54,14 +54,14 @@ if(isset($_SESSION['login_id'])){
         }
 
         a.light-mode,
-        a.light-mode:hover{
+        a.light-mode:hover, h2.light-mode{
             color: #0C7474;
             font-weight:bold
         }
 
         
         a.dark-mode,
-        a.dark-mode:hover{
+        a.dark-mode:hover, h2.dark-mode{
             color: #D4EAF4;
             font-weight:bold
         }
@@ -95,11 +95,26 @@ if(isset($_SESSION['login_id'])){
          color: #D4EAF4;
             font-weight:bold
         }
+       
+        main.light-mode,  table.light-mode{
+            background-color:#e9f4f9;
+
+
+        }
+
+           
+        main.dark-mode,  table.dark-mode{
+            background-color:#0e8b8b;
+
+        }
+
 
         main.light-mode, main.dark-mode {
             margin-left: 220px; /* Set to the width of your sidebar */
             padding-top: 60px; /* Adjust based on your navbar height */
             transition: margin-left 0.3s;
+            height: 100vh; 
+
         }
         .sidebar-sticky {
             display: flex;
@@ -118,7 +133,6 @@ if(isset($_SESSION['login_id'])){
             overflow-y: auto;
         }
        
-       
     </style>
 </head>
 <body>
@@ -133,7 +147,7 @@ if(isset($_SESSION['login_id'])){
             <p class="light-mode fw-bold mt-3" >Welcome,<br>
                <?php echo $_SESSION['name']?></p>
                 <ul class="nav flex-column">
-                    <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Jobs</a>
                 <ul class="dropdown-menu light-mode">
                     <li><a class="dropdown-item light-mode" href="add_job.php">Add Job</a></li>
@@ -142,17 +156,18 @@ if(isset($_SESSION['login_id'])){
                 </ul>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link light-mode" href="majors.php" role="button" >Major</a>
+                    <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Major</a>
+                <ul class="dropdown-menu light-mode">
+                    <li><a class="dropdown-item light-mode" href="add_major.php">Add Major</a></li>
+                    <li><a class="dropdown-item light-mode" href="view_majors.php">View Majors</a></li>
                     <!-- Add more links as needed -->
-              
+                </ul>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link light-mode" href="locations.php" role="button" >Location</a>
-                
                     </li>
                     <li class="nav-item dropdown">
-                <a class="nav-link light-mode" href="types.php" role="button">Type</a>
-              
+                <a class="nav-link light-mode" href="types.php" role="button" >Type</a>
     </li>
 
 
@@ -173,8 +188,43 @@ if(isset($_SESSION['login_id'])){
         </nav>
 
         <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <!-- Your main content goes here -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 light-mode">
+        <div class="container mt-5 text-center">
+                <h2 class="light-mode m-5">Contact Us Table</h2>
+                <table class="table table-responsive table-hover ">
+                    <thead>
+                        <tr>
+                            
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $query = "SELECT * FROM contact_us";
+                            $result = mysqli_query($conn, $query);
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                
+                                echo "<tr>";
+                             
+                                echo "<td>{$row['name']}</td>";
+                                echo "<td><a href='mailto:{$row['email']}'>{$row['email']}</a></td>";
+                                echo "<td>{$row['subject']}</td>";
+                                echo "<td>{$row['message']}</td>";
+                                echo "<td>
+                                <a class='btn btn-danger m-3' href='delete_contactus.php?ID=". $row['id']."'>Delete</a>
+
+                                      </td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </main>
     </div>
 </div>
@@ -186,9 +236,9 @@ if(isset($_SESSION['login_id'])){
 
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
-        $('nav').toggleClass('light-mode dark-mode');
+        $('nav, main, table').toggleClass('light-mode dark-mode');
         $('ul.dropdown-menu').toggleClass('light-mode dark-mode');
-        $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item, p').toggleClass('light-mode dark-mode');
+        $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item, p, h2').toggleClass('light-mode dark-mode');
         var Image = $('#logo');
         var current = Image.attr('src');
         var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';

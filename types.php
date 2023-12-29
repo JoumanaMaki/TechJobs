@@ -54,25 +54,25 @@ if(isset($_SESSION['login_id'])){
         }
 
         a.light-mode,
-        a.light-mode:hover{
+        a.light-mode:hover, h2.light-mode{
             color: #0C7474;
             font-weight:bold
         }
 
         
         a.dark-mode,
-        a.dark-mode:hover{
+        a.dark-mode:hover, h2.dark-mode{
             color: #D4EAF4;
             font-weight:bold
         }
 
 
-        p.light-mode{
+        p.light-mode, label.light-mode, h4.light-mode{
             color: #0C7474;
             font-weight:bold
         }
 
-        p.dark-mode{
+        p.dark-mode,label.dark-mode,h4.dark-mode{
 
          color: #D4EAF4;
             font-weight:bold
@@ -89,12 +89,17 @@ if(isset($_SESSION['login_id'])){
             background-color:#0C7474;
             font-weight:bold
         }
+        main.light-mode,  table.light-mode{
+            background-color:#e9f4f9;
 
-        p.dark-mode{
-
-         color: #D4EAF4;
-            font-weight:bold
         }
+
+           
+        main.dark-mode,  table.dark-mode{
+            background-color:#0e8b8b;
+
+        }
+
 
         main.light-mode, main.dark-mode {
             margin-left: 220px; /* Set to the width of your sidebar */
@@ -144,7 +149,7 @@ if(isset($_SESSION['login_id'])){
                     <li class="nav-item">
                     <a class="nav-link light-mode" href="majors.php" role="button" >Major</a>
                     <!-- Add more links as needed -->
-              
+             
                     </li>
                     <li class="nav-item">
                     <a class="nav-link light-mode" href="locations.php" role="button" >Location</a>
@@ -173,28 +178,139 @@ if(isset($_SESSION['login_id'])){
         </nav>
 
         <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <!-- Your main content goes here -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 light-mode">
+        <div class="container mt-5">
+       <center> <h2 class="light-mode">Type Management</h2></center>
+
+       <?php
+
+if (isset($_GET['error'])) {
+    if ($_GET['error'] == 'duplicate') {
+        echo '<h4 style="color:red; font-weight:bold">Name already exists</h4>';
+    }
+}
+?>
+
+        <div class="mb-5">
+            <form action="add_type.php" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label light-mode">Type Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Type Name" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add Type</button>
+            </form>
+        </div>
+
+        <!-- Table for Displaying Existing Types -->
+        <div>
+            <h4 class="light-mode">Existing Types</h4>
+            <table class="table table-hover light-mode">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        // Fetch and display existing types from the database
+                        $query = "SELECT * FROM type";
+                        $result = mysqli_query($conn, $query);
+
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $typeId = $row['id'];
+                            echo "<tr>";
+                            echo "<td>{$typeId}</td>";
+                            echo "<td>{$row['name']}</td>";
+                            echo "<td>
+                                    <a class='btn btn-danger m-1' href='delete_type.php?ID={$typeId}'>Delete</a>
+                                    <a class='btn btn-primary m-1' href='#' onclick='editType($typeId, \"{$row['name']}\")'>Edit</a>
+                                    </td>";
+                            echo "</tr>";
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
         </main>
     </div>
 </div>
 
-
+<div id="editTypeModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form action="add_type.php" method="post">
+                <div class="mb-3">
+             
+                    <input type = "hidden" class="form-control" id="editTypeId" name="name" placeholder="Enter Type Name" required>
+              
+                    <label for="name" class="form-label">Type Name</label>
+                    <input type="text" class="form-control" id="editTypeName" name="name" placeholder="Enter Type Name" required>
+                </div>
+            
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditType()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
+ function editType(typeId, typeName) {
+    $('#editTypeId').val(typeId);
 
+       $('#editTypeName').val(typeName);
+      
+        $('#editTypeModal').modal('show');
+    }
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
-        $('nav').toggleClass('light-mode dark-mode');
+        $('nav, main').toggleClass('light-mode dark-mode');
         $('ul.dropdown-menu').toggleClass('light-mode dark-mode');
-        $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item, p').toggleClass('light-mode dark-mode');
+        $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item, p, h2,label,h4').toggleClass('light-mode dark-mode');
         var Image = $('#logo');
         var current = Image.attr('src');
         var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
         Image.attr('src', newsrc);
     });
+
 });
+
+function saveEditType() {
+        var typeId = $('#editTypeId').val();
+        var typeName = $('#editTypeName').val();
+
+        $.ajax({
+            type: 'POST',
+            url: 'edit_type.php', 
+            data: {
+                id: typeId,
+                name: typeName
+            },
+            success: function(response) {
+                var editedRow = $("td:contains('" + typeId + "')").closest('tr');
+            editedRow.find('td:eq(1)').text(typeName);
+
+                // Close the modal
+                $('#editTypeModal').modal('hide');
+            },
+            error: function(error) {
+                // Handle the error if needed
+                console.error(error);
+            }
+        });
+    }
 </script>
 </body>
 </html>
