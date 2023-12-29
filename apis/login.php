@@ -23,7 +23,11 @@ if($result->num_rows > 0){
 
     if(password_verify($password, $HashedPass)){
         if($user['is_verified'] ==1){
-           $response = ['status'=>'success', 'message'=>'LogIn successfully'];
+            if($_user['role'] == 1){
+           $response = ['status'=>'success', 'message'=>'LogIn successfully', 'role' => 'User'];
+            }else{
+            $response = ['status'=>'success', 'message'=>'LogIn successfully','role' => 'Admin' ];
+            }
           $_SESSION['login_id'] = $user['id'];
           $_SESSION['image']=$user['img_url'];
           header('Content-type: application/json');

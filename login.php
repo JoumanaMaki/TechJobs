@@ -137,7 +137,12 @@ $.ajax({
     success:function(response){
         if (response.status === 'success') {
                     alert('LogIn successful!');
-                    window.location.href = 'index.php?login=true';
+                    if(response.role == "User"){
+                    window.location.href = 'index.php?login=true';}
+                    else{
+                        window.location.href = 'dashboard_index.php?login=true';}
+   
+                    }
                 } else {
                     showErrorAlert(response.message);
                 }

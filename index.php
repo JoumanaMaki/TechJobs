@@ -23,9 +23,9 @@ if(isset($_SESSION['login_id']) == true){
     <style>
 
 
-.dark-mode-toggle {
-          cursor: pointer;
-      }
+      .dark-mode-toggle {
+                cursor: pointer;
+            }
       nav.light-mode{
          background-color: #D4EAF4;
       }

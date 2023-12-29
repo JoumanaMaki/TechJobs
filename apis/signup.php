@@ -86,7 +86,7 @@ if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
     }
 
     // Insert into user_login table
-    $loginQuery = "INSERT INTO user_login (email, password) VALUES ('$email', '$password')";
+    $loginQuery = "INSERT INTO user_login (email, password,role) VALUES ('$email', '$password',1)";
     if ($conn->query($loginQuery) === TRUE) {
         // Get the user_login ID
         $loginId = $conn->insert_id;

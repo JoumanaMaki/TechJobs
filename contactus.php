@@ -165,7 +165,7 @@ if(isset($_SESSION['login_id']) == true){
 
         <!--Grid column-->
         <div class="col-md-9 mb-md-0 mb-5">
-            <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+            <form id="contact-form" name="contact-form" action="./apis/contact_us.php" method="POST">
 
                 <!--Grid row-->
                 <div class="row">
@@ -220,29 +220,30 @@ if(isset($_SESSION['login_id']) == true){
                     </div>
                 </div>
                 <!--Grid row-->
-
+                <div class="text-center text-md-left">
+                <!-- <a class="btn btn-light light-mode m-3" onclick="document.getElementById('contact-form').submit();">Send</a> -->
+        <button class="btn btn-light light-mode m-3" type="submit">Send</button>
+            </div>
             </form>
 
-            <div class="text-center text-md-left">
-                <a class="btn btn-light light-mode m-3" onclick="document.getElementById('contact-form').submit();">Send</a>
-            </div>
-            <div class="status"></div>
+           
+            <div class="status text-center" style="color:red"></div>
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 text-center mt-5">
             <ul class="list-unstyled mb-0">
                 <li><i class="fas fa-map-marker-alt fa-2x"></i>
-                    <p>San Francisco, CA 94126, USA</p>
+                    <p class="light-mode fw-bold">Beirut, Lebanon</p>
                 </li>
 
                 <li><i class="fas fa-phone mt-4 fa-2x"></i>
-                    <p>+ 01 234 567 89</p>
+                    <p class="light-mode fw-bold">+961 71 987 123</p>
                 </li>
 
                 <li><i class="fas fa-envelope mt-4 fa-2x"></i>
-                    <p>contact@mdbootstrap.com</p>
+                    <p class="light-mode fw-bold">techjob@job.com</p>
                 </li>
             </ul>
         </div>
@@ -268,6 +269,30 @@ $(document).ready(function(){
         Image.attr('src', newsrc);
 
     });
-});
+
+
+
+
+    $('#contact-form').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: './apis/contact_us.php', 
+                data: formData,
+                success: function(response) {
+                    $('.status').html(response.message);
+                    $('#contact-form')[0].reset();
+                },
+                error: function(error) {
+                   
+                    $('.status').html('Error occurred: ' + error.statusText);
+                }
+            });
+        });
+
+    });
+
 </script>
 </html>
