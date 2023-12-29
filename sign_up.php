@@ -202,31 +202,31 @@
             }
         });
 
-        $('#signupForm').submit(function (e) {
-        e.preventDefault();
+    //     $('#signupForm').submit(function (e) {
+    //     e.preventDefault();
 
-        var formData = new FormData(this);
+    //     var formData = new FormData(this);
 
-        $.ajax({
-            type: 'POST',
-            url: 'apis/signup.php',
-            data: formData,
-            contentType: false,
-            processData: false,
-            dataType: 'json',
-            success: function (response) {
-                console.log(response);
-                if (response.status === 'success') {
-                    alert('Signup successful!');
-                } else {
-                    showErrorAlert(response.message);
-                }
-            },
-            error: function () {
-                alert('Signup failed. Please try again.');
-            }
-        });
-    });
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: 'apis/signup.php',
+    //         data: formData,
+    //         contentType: false,
+    //         processData: false,
+    //         dataType: 'json',
+    //         success: function (response) {
+    //             console.log(response);
+    //             if (response.status === 'success') {
+    //                 alert('Signup successful!');
+    //             } else {
+    //                 showErrorAlert(response.message);
+    //             }
+    //         },
+    //         error: function () {
+    //             alert('Signup failed. Please try again.');
+    //         }
+    //     });
+    // });
 
 })
   

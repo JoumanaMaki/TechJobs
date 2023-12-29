@@ -58,7 +58,9 @@ if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&
 
 
 if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-    $imagePath = $targetFile;
+    $targetDir1 = "./uploads/users";
+    $targetFile1 = $targetDir1 . basename($_FILES["image"]["name"]);
+    $imagePath = $targetFile1;
 
     if ($_POST['major_id'] == 'other') {
         // Get the custom_major input value

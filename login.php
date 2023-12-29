@@ -141,9 +141,8 @@ $.ajax({
                     window.location.href = 'index.php?login=true';}
                     else{
                         window.location.href = 'dashboard_index.php?login=true';}
-   
                     }
-                } else {
+                 else {
                     showErrorAlert(response.message);
                 }
     },
