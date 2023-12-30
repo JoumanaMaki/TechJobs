@@ -47,6 +47,7 @@ if(isset($_SESSION['login_id'])){
           color: #0C7474;
         }
         nav.light-mode{
+            
            background-color: #D4EAF4;
            height: 100vh; 
         }
@@ -56,25 +57,25 @@ if(isset($_SESSION['login_id'])){
         }
 
         a.light-mode,
-        a.light-mode:hover{
+        a.light-mode:hover, h2.light-mode{
             color: #0C7474;
             font-weight:bold
         }
 
         
         a.dark-mode,
-        a.dark-mode:hover{
+        a.dark-mode:hover, h2.dark-mode{
             color: #D4EAF4;
             font-weight:bold
         }
 
 
-        p.light-mode{
+        p.light-mode, label.light-mode, h4.light-mode{
             color: #0C7474;
             font-weight:bold
         }
 
-        p.dark-mode{
+        p.dark-mode,label.dark-mode,h4.dark-mode{
 
          color: #D4EAF4;
             font-weight:bold
@@ -91,16 +92,20 @@ if(isset($_SESSION['login_id'])){
             background-color:#0C7474;
             font-weight:bold
         }
+        main.light-mode,  table.light-mode{
+            background-color:#e9f4f9;
 
-        p.dark-mode{
+        }
 
-         color: #D4EAF4;
-            font-weight:bold
+           
+        main.dark-mode,  table.dark-mode{
+            background-color:#0e8b8b;
+
         }
 
         main.light-mode, main.dark-mode {
-            margin-left: 220px; 
-                        padding-top: 60px;
+            margin-left: 220px; /* Set to the width of your sidebar */
+            padding-top: 60px; /* Adjust based on your navbar height */
             transition: margin-left 0.3s;
         }
         .sidebar-sticky {
@@ -114,11 +119,11 @@ if(isset($_SESSION['login_id'])){
             top: 0;
             left: 0;
             height: 100%;
-            width: 220px; 
+            width: 220px; /* Set the desired width of your sidebar */
+           
             transition: width 0.3s;
             overflow-y: auto;
         }
-       
        
     </style>
 </head>
@@ -173,9 +178,62 @@ if(isset($_SESSION['login_id'])){
         </div>
         </nav>
 
-        <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <!-- Your main content goes here -->
+     <!-- Main content -->
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 light-mode">
+        <div class="container mt-5">
+       <center> <h2 class="light-mode">Jobs</h2></center>
+
+       <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>Type</th>
+                            <th>Major</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                       $query = "SELECT * FROM job";
+
+                       // Perform the query
+                       $result = mysqli_query($conn, $query);
+                     
+                       // Loop through the retrieved job data and display it in the table
+                       while ($row = mysqli_fetch_assoc($result)) {
+                        $city_id=$row['city_id'];
+                        $query1 = "SELECT * FROM city where id='$city_id'";
+                        $result1 = mysqli_query($conn, $query1);
+                        $row1 = mysqli_fetch_assoc($result1);
+
+
+                        $type_id=$row['type_id'];
+                        $query2 = "SELECT * FROM type where id='$type_id'";
+                        $result2 = mysqli_query($conn, $query2);
+                        $row2 = mysqli_fetch_assoc($result2);
+
+                        $major_id=$row['major_id'];
+                        $query3 = "SELECT * FROM major where id='$major_id'";
+                        $result3 = mysqli_query($conn, $query3);
+                        $row3 = mysqli_fetch_assoc($result3);
+                           echo "<tr>";
+                           echo "<td>{$row['id']}</td>";
+                           echo "<td><a href=job_details.php?ID={$row['id']}>{$row['name']}</a></td>";
+                           echo "<td>{$row['company_name']}</td>";
+                           echo "<td>{$row1['name']}</td>";
+                           echo "<td>{$row2['name']}</td>";
+                           echo "<td>{$row3['name']}</td>";
+                           echo "<td><button class='btn btn-primary'>Edit</button> <button class='btn btn-danger'>Delete</button></td>";
+                           echo "</tr>";
+                       }
+                       ?>
+                    
+                    </tbody>
+                </table>
+    </div>
         </main>
     </div>
 </div>
@@ -183,19 +241,25 @@ if(isset($_SESSION['login_id'])){
 
 
 
+
+
+
 <script>
+
 
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
-        $('nav').toggleClass('light-mode dark-mode');
+        $('nav, main').toggleClass('light-mode dark-mode');
         $('ul.dropdown-menu').toggleClass('light-mode dark-mode');
-        $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item, p').toggleClass('light-mode dark-mode');
+        $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item, p, h2,label,h4').toggleClass('light-mode dark-mode');
         var Image = $('#logo');
         var current = Image.attr('src');
         var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
         Image.attr('src', newsrc);
     });
+
 });
+
 </script>
 </body>
 </html>
