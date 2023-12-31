@@ -220,13 +220,13 @@ if(isset($_SESSION['login_id'])){
                         $result3 = mysqli_query($conn, $query3);
                         $row3 = mysqli_fetch_assoc($result3);
                            echo "<tr>";
-                           echo "<td>{$row['id']}</td>";
+                           echo "<td><img src='{$row['image_url']}' width=100px height= 100px></td>";
                            echo "<td><a href=job_details.php?ID={$row['id']}>{$row['name']}</a></td>";
                            echo "<td>{$row['company_name']}</td>";
                            echo "<td>{$row1['name']}</td>";
                            echo "<td>{$row2['name']}</td>";
                            echo "<td>{$row3['name']}</td>";
-                           echo "<td><button class='btn btn-primary'>Edit</button> <button class='btn btn-danger'>Delete</button></td>";
+                           echo "<td><a class='btn btn-primary m-1' href='#' onclick='editJob({$row['id']}, \"{$row['name']}\", \"{$row['company_name']}\", \"{$row['requirements']}\", \"{$row['objectives']}\", {$row['major_id']}, {$row['city_id']}, \"{$row['image_url']}\", {$row['author_id']}, {$row['is_published']}, \"{$row['email']}\", \"{$row['phone']}\",\"{$row['type_id']}\", \"{$row['description']}\", {$row['salary']})'>Edit</a> <a class='btn btn-danger' href='delete_job.php?ID={$row['id']}' >Delete</button></td>";
                            echo "</tr>";
                        }
                        ?>
@@ -241,10 +241,156 @@ if(isset($_SESSION['login_id'])){
 
 
 
+<!-- editTypeModal -->
+<div id="editJobModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="add_type.php" method="post">
+                    <!-- Hidden field for type ID -->
+                    <input type="hidden" class="form-control" id="editTypeId" name="editTypeId" required>
+                    
+                    <!-- Job Title -->
+                    <div class="mb-3">
+                        <label for="editJobTitle" class="form-label light-mode">Job Title</label>
+                        <input type="text" class="form-control" id="editJobTitle" name="editJobTitle" placeholder="Enter Job Title" required>
+                    </div>
+                    
+                    <!-- Company Name -->
+                    <div class="mb-3">
+                        <label for="editCompanyName" class="form-label light-mode">Company Name</label>
+                        <input type="text" class="form-control" id="editCompanyName" name="editCompanyName" placeholder="Enter Company Name" required>
+                    </div>
+                    
+                    <!-- Company Email -->
+                    <div class="mb-3">
+                        <label for="editCompanyEmail" class="form-label light-mode">Company Email</label>
+                        <input type="email" class="form-control" id="editCompanyEmail" name="editCompanyEmail" placeholder="Enter Company Email" required>
+                    </div>
+                    
+                    <!-- Company Phone Number -->
+                    <div class="mb-3">
+                        <label for="editCompanyPhone" class="form-label light-mode">Company Phone Number</label>
+                        <input type="text" class="form-control" id="editCompanyPhone" name="editCompanyPhone" placeholder="Enter Company Phone Number" required>
+                    </div>
+                    
+                    <!-- Salary -->
+                    <div class="mb-3">
+                        <label for="editSalary" class="form-label light-mode">Salary</label>
+                        <input type="number" class="form-control" id="editSalary" step="0.00000001" name="editSalary" placeholder="Enter Salary" required>
+                    </div>
+                    
+                    <!-- Requirements -->
+                    <div class="mb-3">
+                        <label for="editRequirements" class="form-label light-mode">Requirements</label>
+                        <input type="text" class="form-control" id="editRequirements" name="editRequirements" placeholder="Enter Requirements" required>
+                    </div>
+                    
+                    <!-- Objectives -->
+                    <div class="mb-3">
+                        <label for="editObjectives" class="form-label light-mode">Objectives</label>
+                        <input type="text" class="form-control" id="editObjectives" name="editObjectives" placeholder="Enter Objectives" required>
+                    </div>
+
+                    <!-- City -->
+                    <div class="mb-3">
+                        <label for="editCity" class="form-label light-mode">City</label>
+                        <select class="form-select" id="editCity" name="editCity" required>
+                            <?php
+                            // Fetch cities from the database and populate the dropdown
+                            $cityQuery = "SELECT * FROM city";
+                            $cityResult = mysqli_query($conn, $cityQuery);
+                            while ($cityRow = mysqli_fetch_assoc($cityResult)) {
+                                echo "<option value='{$cityRow['id']}'>{$cityRow['name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Major -->
+                    <div class="mb-3">
+                        <label for="editMajor" class="form-label light-mode">Major</label>
+                        <select class="form-select" id="editMajor" name="editMajor" required>
+                            <?php
+                            $query = "SELECT * FROM major where is_published = 1";
+                            $result = mysqli_query($conn, $query);
+                            while($row= mysqli_fetch_assoc($result)){
+                                echo "<option value='{$row['id']}'>{$row['name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Job Type -->
+                    <div class="mb-3">
+                        <?php
+                        $typeQuery = "SELECT * FROM type";
+                        $typeResult = mysqli_query($conn, $typeQuery);
+
+                        $radioGroupName = 'editJobType';
+                        echo "<p class='light-mode'>Job Type</p>";
+                        while ($typeRow = mysqli_fetch_assoc($typeResult)) {
+                            echo "<input class='m-2' type='radio' name='{$radioGroupName}' id='editType{$typeRow['id']}' value='{$typeRow['id']}' required>";
+                            echo "<label class='light-mode' for='editType{$typeRow['id']}'>{$typeRow['name']}</label>";
+                        }
+                        ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label light-mode">Description</label>
+                        <input type="text" class="form-control" id="editDescription" name="editDescription" placeholder="Enter Description" required>
+                    </div>
+
+                 
+                    <div class="mb-3">
+                        <label for="editImage" class="form-label light-mode">Image</label>
+                        <img src="#" id="editimageurl" width="200px" height="200px">
+                        <input type="file" class="form-control" id="editImage" name="editImage" required>
+                    </div>
+                    <div class="mb-3">
+                <input type="checkbox" class="form-check-input" id="is_published" name="is_published" >
+             <label for="is_published" class="form-label light-mode">Is _Published</label>
+                </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="saveEditJob()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 <script>
+
+
+function editJob(id, name, company_name, requirements, objectives, major_id, city_id, image_url, author_id, is_published, email, phone, type_id, description, salary) {
+
+    $('#editTypeId').val(id);
+    $('#editJobTitle').val(name);
+    $('#editCompanyName').val(company_name);
+    $('#editCompanyEmail').val(email);
+    $('#editCompanyPhone').val(phone);
+    $('#editSalary').val(salary);
+    $('#editRequirements').val(requirements);
+    $('#editObjectives').val(objectives);
+    $('#editCity').val(city_id);
+    $('#editMajor').val(major_id);
+    $('#editDescription').val(description);
+    $('#is_published').prop('checked', is_published == 1);
+    $('#editimageurl').attr('src', image_url);
+    var jobType = type_id; // Replace this with the actual variable representing job type
+    $('input[name="editJobType"]').filter('[value="' + jobType + '"]').prop('checked', true);
+        $('#editJobModal').modal('show');
+    }
+
 
 
 $(document).ready(function(){
@@ -259,6 +405,64 @@ $(document).ready(function(){
     });
 
 });
+
+function saveEditJob() {
+    var id = $('#editTypeId').val();
+    var name = $('#editJobTitle').val();
+    var company_name = $('#editCompanyName').val();
+    var email = $('#editCompanyEmail').val();
+    var phone = $('#editCompanyPhone').val();
+    var salary = $('#editSalary').val();
+    var requirements = $('#editRequirements').val();
+    var objectives = $('#editObjectives').val();
+    var city_id = $('#editCity').val();
+    var major_id = $('#editMajor').val();
+    var description = $('#editDescription').val();
+    var is_published = $('#is_published').prop('checked') ? 1 : 0;
+
+    // Check if a new photo has been selected
+    var newImageSelected = $('#editImage').prop('files').length > 0;
+
+    // If a new photo is selected, take the new URL; otherwise, use the old URL
+    var image_url = newImageSelected ? $('#editImage').attr('src') : $('#editimageurl').attr('src');
+
+    var type_id = $('input[name="editJobType"]:checked').val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'edit_job.php',
+        data: {
+            id: id,
+            name: name,
+            company_name: company_name,
+            email: email,
+            phone: phone,
+            salary: salary,
+            requirements: requirements,
+            objectives: objectives,
+            city_id: city_id,
+            major_id: major_id,
+            description: description,
+            is_published: is_published,
+            image_url: image_url,
+            type_id: type_id
+        },
+        success: function (response) {
+            // Update the edited row in the table
+            var editedRow = $("td:contains('" + id + "')").closest('tr');
+            editedRow.find('td:eq(1)').text(name);
+            // You can update other cells as needed
+
+            // Close the modal
+            $('#editJobModal').modal('hide');
+        },
+        error: function (error) {
+            // Handle the error if needed
+            console.error(error);
+        }
+    });
+}
+
 
 </script>
 </body>

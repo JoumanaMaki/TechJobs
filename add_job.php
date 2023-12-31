@@ -210,6 +210,11 @@ if (isset($_GET['error'])) {
                     <label for="phone" class="form-label light-mode">Company Phone Number</label>
                     <input type="text" class="form-control"  id="phone" name="phone" placeholder="Enter Company Phone Number" required>
                 </div>
+
+                <div class="mb-3">
+                    <label for="salary" class="form-label light-mode">Salary</label>
+                    <input type="number" class="form-control"  id="salary" step="0.00000001" name="salary" placeholder="Enter salary" required>
+                </div>
                 <div class="mb-3">
                     <label for="requirements" class="form-label light-mode">Requirements</label>
                     <input type="text" class="form-control"  id="requirements" name="requirements" placeholder="Enter Requirements" required>
@@ -283,7 +288,11 @@ if (isset($_GET['error'])) {
 </div>
 
 
+
+
 <script>
+
+
 
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){

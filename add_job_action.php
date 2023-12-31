@@ -12,6 +12,7 @@ if (isset($_POST['name'])) {
     $requirements = $_POST['requirements'];
     $objectives = $_POST['objectives'];
     $email = $_POST['email'];
+    $salary = $_POST['salary'];
     $phone = $_POST['phone'];
     $city = $_POST['city'];
     $major = $_POST['major'];
@@ -30,8 +31,8 @@ if (isset($_POST['name'])) {
         $targetFile1 = $targetDir1 . basename($_FILES["image"]["name"]);
         $imagePath = $targetFile1;
     
-        $query = "INSERT INTO job (name, company_name, description, requirements, objectives, email, phone, city_id, major_id, type_id, is_published, author_id, image_url)
-        VALUES ('$name', '$companyname', '$description', '$requirements', '$objectives', '$email', '$phone', '$city', '$major', '$type', '$ispublish', '$author_id', '$imagePath')";
+        $query = "INSERT INTO job (name, company_name, description, requirements, objectives, email, phone, city_id, major_id, type_id, is_published, author_id, image_url, salary)
+        VALUES ('$name', '$companyname', '$description', '$requirements', '$objectives', '$email', '$phone', '$city', '$major', '$type', '$ispublish', '$author_id', '$imagePath', '$salary')";
 
 $result = mysqli_query($conn, $query);
 
