@@ -14,8 +14,9 @@
 //include "./navbar.php";
 
 include "./db_config/connection.php";
+session_start();
 
-if(isset($_SESSION['login_id']) == true){
+if(isset($_SESSION['login_id'])){
     $src = $_SESSION['image'];
 }
 
@@ -104,7 +105,7 @@ if(isset($_SESSION['login_id']) == true){
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link light-mode" href="#">Link</a>
+          <a class="nav-link light-mode" href="index.php">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link light-mode" href="./about.php">About</a>
@@ -124,7 +125,7 @@ if(isset($_SESSION['login_id']) == true){
     </div>
 
 
-    <?php if (!empty($avatarSrc)) : ?>
+    <?php if (!empty($src)) : ?>
                 <a class="navbar-brand" href="#">
                      <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> 
                   </a>   

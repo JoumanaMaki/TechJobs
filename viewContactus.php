@@ -156,12 +156,7 @@ if(isset($_SESSION['login_id'])){
                 </ul>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Major</a>
-                <ul class="dropdown-menu light-mode">
-                    <li><a class="dropdown-item light-mode" href="add_major.php">Add Major</a></li>
-                    <li><a class="dropdown-item light-mode" href="view_majors.php">View Majors</a></li>
-                    <!-- Add more links as needed -->
-                </ul>
+                    <a class="nav-link light-mode" href="majors.php" role="button">Major</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link light-mode" href="locations.php" role="button" >Location</a>
