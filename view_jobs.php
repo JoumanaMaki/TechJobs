@@ -94,18 +94,19 @@ if(isset($_SESSION['login_id'])){
         }
         main.light-mode,  table.light-mode{
             background-color:#e9f4f9;
-
+            height: 100vh; 
         }
 
            
         main.dark-mode,  table.dark-mode{
             background-color:#0e8b8b;
+            height: 100vh; 
 
         }
 
         main.light-mode, main.dark-mode {
-            margin-left: 220px; /* Set to the width of your sidebar */
-            padding-top: 60px; /* Adjust based on your navbar height */
+            margin-left: 220px; 
+            padding-top: 60px; 
             transition: margin-left 0.3s;
         }
         .sidebar-sticky {
@@ -182,7 +183,72 @@ if(isset($_SESSION['login_id'])){
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 light-mode">
         <div class="container mt-5">
        <center> <h2 class="light-mode">Jobs</h2></center>
+       <div class="row mb-3 justify-content-end">
+    <div class="col-md-2">
+        <!-- <label for="liveSearch" class="form-label light-mode">Live Search</label> -->
+        <input type="text" class="form-control" id="liveSearch" placeholder="Search jobs...">
+    </div>
+</div>
 
+<div class="row mb-3 justify-content-start">
+    <div class="col-md-3">
+        <label for="majorFilter" class="form-label light-mode">Major Filter</label>
+        <select class="form-select" id="majorFilter">
+            <option value="">All Majors</option>
+            <?php
+                // Fetch majors from the database and populate the dropdown
+                $majorQuery = "SELECT * FROM major";
+                $majorResult = mysqli_query($conn, $majorQuery);
+                while ($majorRow = mysqli_fetch_assoc($majorResult)) {
+                    echo "<option value='{$majorRow['id']}'>{$majorRow['name']}</option>";
+                }
+            ?>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="locationFilter" class="form-label light-mode">Location Filter</label>
+        <select class="form-select" id="locationFilter">
+            <option value="">All Locations</option>
+            <?php
+                // Fetch locations from the database and populate the dropdown
+                $locationQuery = "SELECT * FROM city";
+                $locationResult = mysqli_query($conn, $locationQuery);
+                while ($locationRow = mysqli_fetch_assoc($locationResult)) {
+                    echo "<option value='{$locationRow['id']}'>{$locationRow['name']}</option>";
+                }
+            ?>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label for="typeFilter" class="form-label light-mode">Type Filter</label>
+        <select class="form-select" id="typeFilter">
+            <option value="">All Types</option>
+            <?php
+                // Fetch types from the database and populate the dropdown
+                $typeQuery = "SELECT * FROM type";
+                $typeResult = mysqli_query($conn, $typeQuery);
+                while ($typeRow = mysqli_fetch_assoc($typeResult)) {
+                    echo "<option value='{$typeRow['id']}'>{$typeRow['name']}</option>";
+                }
+            ?>
+        </select>
+    </div>
+
+    <div class="col-md-2 mt-5">
+           
+                <label for="is_published" class="form-check-label light-mode">Published Only</label>
+                <input type="checkbox" class="form-check-input" id="is_published">
+            </div>
+
+
+            <div class="col-md-2 mt-3">
+           
+         
+            <button class="btn btn-secondary" onclick="resetFilters()">Reset Filters</button>
+          
+       </div>  
+
+</div>
        <table class="table table-hover ">
                     <thead>
                         <tr>
@@ -192,6 +258,7 @@ if(isset($_SESSION['login_id'])){
                             <th>Location</th>
                             <th>Type</th>
                             <th>Major</th>
+                            <th>Is_Published</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -204,6 +271,14 @@ if(isset($_SESSION['login_id'])){
                      
                        // Loop through the retrieved job data and display it in the table
                        while ($row = mysqli_fetch_assoc($result)) {
+
+                        
+                       if($row['is_published'] == 1){
+                        $is_published='Yes';
+                       }else{
+                        $is_published='No';
+                       }
+
                         $city_id=$row['city_id'];
                         $query1 = "SELECT * FROM city where id='$city_id'";
                         $result1 = mysqli_query($conn, $query1);
@@ -219,13 +294,15 @@ if(isset($_SESSION['login_id'])){
                         $query3 = "SELECT * FROM major where id='$major_id'";
                         $result3 = mysqli_query($conn, $query3);
                         $row3 = mysqli_fetch_assoc($result3);
-                           echo "<tr>";
-                           echo "<td><img src='{$row['image_url']}' width=100px height= 100px></td>";
+                        $id= $row['id'];
+                        echo "<tr id='locationRow_$id' data-major_id='{$row3['id']}' data-location_id='{$city_id}' data-type_id='{$type_id}' data-is_published='{$row['is_published']}'>";
+                        echo "<td><img src='{$row['image_url']}' width=100px height= 100px></td>";
                            echo "<td><a href=job_details.php?ID={$row['id']}>{$row['name']}</a></td>";
                            echo "<td>{$row['company_name']}</td>";
                            echo "<td>{$row1['name']}</td>";
                            echo "<td>{$row2['name']}</td>";
                            echo "<td>{$row3['name']}</td>";
+                           echo "<td>{$is_published}</td>";
                            echo "<td><a class='btn btn-primary m-1' href='#' onclick='editJob({$row['id']}, \"{$row['name']}\", \"{$row['company_name']}\", \"{$row['requirements']}\", \"{$row['objectives']}\", {$row['major_id']}, {$row['city_id']}, \"{$row['image_url']}\", {$row['author_id']}, {$row['is_published']}, \"{$row['email']}\", \"{$row['phone']}\",\"{$row['type_id']}\", \"{$row['description']}\", {$row['salary']})'>Edit</a> <a class='btn btn-danger' href='delete_job.php?ID={$row['id']}' >Delete</button></td>";
                            echo "</tr>";
                        }
@@ -352,8 +429,8 @@ if(isset($_SESSION['login_id'])){
                         <input type="file" class="form-control" id="editImage" name="editImage" required>
                     </div>
                     <div class="mb-3">
-                <input type="checkbox" class="form-check-input" id="is_published" name="is_published" >
-             <label for="is_published" class="form-label light-mode">Is _Published</label>
+                <input type="checkbox" class="form-check-input" id="editis_published" name="editis_published" >
+             <label for="editis_published" class="form-label light-mode">Is _Published</label>
                 </div>
 
                     <div class="modal-footer">
@@ -370,7 +447,6 @@ if(isset($_SESSION['login_id'])){
 
 <script>
 
-
 function editJob(id, name, company_name, requirements, objectives, major_id, city_id, image_url, author_id, is_published, email, phone, type_id, description, salary) {
 
     $('#editTypeId').val(id);
@@ -384,7 +460,7 @@ function editJob(id, name, company_name, requirements, objectives, major_id, cit
     $('#editCity').val(city_id);
     $('#editMajor').val(major_id);
     $('#editDescription').val(description);
-    $('#is_published').prop('checked', is_published == 1);
+    $('#editis_published').prop('checked', is_published == 1);
     $('#editimageurl').attr('src', image_url);
     var jobType = type_id; // Replace this with the actual variable representing job type
     $('input[name="editJobType"]').filter('[value="' + jobType + '"]').prop('checked', true);
@@ -404,7 +480,82 @@ $(document).ready(function(){
         Image.attr('src', newsrc);
     });
 
+
+    $('#liveSearch').on('input', function () {
+        var searchText = $(this).val().toLowerCase();
+
+        // Loop through each row in the table and hide/show based on search text
+        $('table tbody tr').each(function () {
+            var rowText = $(this).text().toLowerCase();
+            if (rowText.includes(searchText)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+      
+
 });
+function filterTable() {
+    var majorFilter = $('#majorFilter').val();
+    var locationFilter = $('#locationFilter').val();
+    var typeFilter = $('#typeFilter').val();
+    var isPublishedFilter = $('#is_published').prop('checked') ? '1' : '0';
+
+    // Loop through each row in the table and show/hide based on filters
+    $('table tbody tr').each(function() {
+        var majorId = $(this).data('major_id');
+        var locationId = $(this).data('location_id');
+        var typeId = $(this).data('type_id');
+        var isPublished = $(this).data('is_published');
+
+        var majorMatch = majorFilter === '' || majorId == majorFilter;
+        var locationMatch = locationFilter === '' || locationId == locationFilter;
+        var typeMatch = typeFilter === '' || typeId == typeFilter;
+        var isPublishedMatch = isPublishedFilter === '' || isPublished == isPublishedFilter;
+
+        if (majorMatch && locationMatch && typeMatch && isPublishedMatch) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+}
+
+$('#is_published').on('change', function() {
+    filterTable();
+});
+
+// Event listener for major filter
+$('#majorFilter').on('change', function() {
+    filterTable();
+});
+
+// Event listener for location filter
+$('#locationFilter').on('change', function() {
+    filterTable();
+});
+
+// Event listener for type filter
+$('#typeFilter').on('change', function() {
+    filterTable();
+});
+
+function resetFilters() {
+    // Reset the values of all filter elements
+    $('#liveSearch').val('');
+    $('#majorFilter').val('');
+    $('#locationFilter').val('');
+    $('#typeFilter').val('');
+    $('#is_published').prop('checked', false);
+
+    // Show all rows in the table
+    $('table tbody tr').show();
+}
+
+
 
 function saveEditJob() {
     var id = $('#editTypeId').val();
@@ -418,16 +569,63 @@ function saveEditJob() {
     var city_id = $('#editCity').val();
     var major_id = $('#editMajor').val();
     var description = $('#editDescription').val();
-    var is_published = $('#is_published').prop('checked') ? 1 : 0;
-
-    // Check if a new photo has been selected
-    var newImageSelected = $('#editImage').prop('files').length > 0;
-
-    // If a new photo is selected, take the new URL; otherwise, use the old URL
-    var image_url = newImageSelected ? $('#editImage').attr('src') : $('#editimageurl').attr('src');
+    var is_published = $('#editis_published').is(':checked') ? 1 : 0;
 
     var type_id = $('input[name="editJobType"]:checked').val();
 
+    // Check if a new image is selected
+    var newImageFile = $('#editImage')[0].files[0];
+
+    // If a new image is selected, upload it; otherwise, use the existing image URL
+    if (newImageFile) {
+        var formData = new FormData();
+        formData.append('image', newImageFile);
+
+        $.ajax({
+            type: 'POST',
+            url: 'upload_image.php',  // Adjust the URL for handling image uploads
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                // Handle the response from the image upload (response should be the new image URL)
+                var image_url = response;
+
+                updateJobDetails(id, name, company_name, email, phone, salary, requirements, objectives,
+                    city_id, major_id, description, is_published, image_url, type_id);
+            },
+            error: function (error) {
+                console.error("Error uploading new image:", error);
+            }
+        });
+    } else {
+        var image_url = $('#editimageurl').attr('src');
+
+        updateJobDetails(id, name, company_name, email, phone, salary, requirements, objectives,
+            city_id, major_id, description, is_published, image_url, type_id);
+    }
+}
+
+
+function updateJobDetails(id, name, company_name, email, phone, salary, requirements, objectives,
+    city_id, major_id, description, is_published, image_url, type_id) {
+        console.log("Data to be sent in AJAX request:", {
+            id: id,
+            name: name,
+            company_name: company_name,
+            email: email,
+            phone: phone,
+            salary: salary,
+            requirements: requirements,
+            objectives: objectives,
+            city_id: city_id,
+            major_id: major_id,
+            description: description,
+            is_published: is_published,
+            image_url: image_url,
+            type_id: type_id
+        });
+    // Perform the AJAX request to update the job details
     $.ajax({
         type: 'POST',
         url: 'edit_job.php',
@@ -448,12 +646,27 @@ function saveEditJob() {
             type_id: type_id
         },
         success: function (response) {
-            // Update the edited row in the table
-            var editedRow = $("td:contains('" + id + "')").closest('tr');
-            editedRow.find('td:eq(1)').text(name);
-            // You can update other cells as needed
+            const data = JSON.parse(response);
 
-            // Close the modal
+
+            // Update the edited row in the table
+            var editedRow = $("#locationRow_" + id);
+       
+            editedRow.find('td:eq(1)').text(name);
+            editedRow.find('td:eq(2)').text(company_name);
+
+            var imageSrc = (image_url !== "") ? image_url : "default_image.jpg"; 
+            editedRow.find('td:eq(0)').html('<img src="' + imageSrc + '" alt="Image" width=100px height= 100px>');
+            editedRow.find('td:eq(3)').text(data.city_name);
+             editedRow.find('td:eq(4)').text(data.type_name);
+           editedRow.find('td:eq(5)').text(data.major_name);
+
+
+            if (is_published == 1) {
+                editedRow.find('td:eq(6)').text('Yes');
+            } else {
+                editedRow.find('td:eq(6)').text('No');
+            }
             $('#editJobModal').modal('hide');
         },
         error: function (error) {
@@ -462,6 +675,7 @@ function saveEditJob() {
         }
     });
 }
+
 
 
 </script>
