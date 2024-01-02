@@ -20,6 +20,8 @@ if(isset($_SESSION['login_id'])){
 ?>
 
  <style>
+ 
+
 
 
          .dark-mode-toggle {
@@ -152,22 +154,22 @@ if(isset($_SESSION['login_id'])){
     <span class="dark-mode-icon">&#9788;</span>
 </div>
 </nav>
-</body>
 
 
 
-<!--Section: Contact v.2-->
-<section class="light-mode">
+
+
+<section class="container-fluid light-mode">
 
    
     <h2 class="h1-responsive font-weight-bold text-center p-3 light-mode">Contact us</h2>
     <!--Section description-->
     <h4 class="text-center w-responsive mx-auto mb-5 light-mode">Feel Free to send Us a message!</h4>
 
-    <div class="row light-mode p-4">
+    <div class="row light-mode p-3">
 
         <!--Grid column-->
-        <div class="col-md-9 mb-md-0 mb-5">
+        <div class="col-9 mb-5">
             <form id="contact-form" name="contact-form" action="./apis/contact_us.php" method="POST">
 
                 <!--Grid row-->
@@ -226,26 +228,26 @@ if(isset($_SESSION['login_id'])){
                 <div class="text-center text-md-left">
                 <!-- <a class="btn btn-light light-mode m-3" onclick="document.getElementById('contact-form').submit();">Send</a> -->
         <button class="btn btn-light light-mode m-3" type="submit">Send</button>
-            </div>
+           
             </form>
-
+            </div>
            
             <div class="status text-center" style="color:red"></div>
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-md-3 text-center mt-5">
+        <div class="col-3 text-center mt-5">
             <ul class="list-unstyled mb-0">
-                <li><i class="fas fa-map-marker-alt fa-2x"></i>
+                <li><i class="fas fa-map-marker-alt"></i>
                     <p class="light-mode fw-bold">Beirut, Lebanon</p>
                 </li>
 
-                <li><i class="fas fa-phone mt-4 fa-2x"></i>
+                <li><i class="fas fa-phone mt-4 "></i>
                     <p class="light-mode fw-bold">+961 71 987 123</p>
                 </li>
 
-                <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+                <li><i class="fas fa-envelope mt-4 "></i>
                     <p class="light-mode fw-bold">techjob@job.com</p>
                 </li>
             </ul>
@@ -255,7 +257,7 @@ if(isset($_SESSION['login_id'])){
     </div>
 
 </section>
-<!--Section: Contact v.2-->
+
 
 <script>
 $(document).ready(function(){
@@ -298,4 +300,5 @@ $(document).ready(function(){
     });
 
 </script>
+</body>
 </html>

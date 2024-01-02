@@ -133,6 +133,29 @@ if(isset($_SESSION['login_id'])){
 </nav>
 
 
+<!-- Add this code inside the body section of your HTML -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="images/slide2.png" class="d-block w-100"  height="400px" alt="Slide 1">
+    </div>
+    <div class="carousel-item">
+      <img src="images/3.png" class="d-block w-100"  height="400px" alt="Slide 2">
+    </div>
+    <div class="carousel-item">
+      <img src="images/6.png" class="d-block w-100" height="400px" alt="Slide 3">
+    </div>
+    <!-- Add more carousel items as needed -->
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
 
 <script>
@@ -147,11 +170,25 @@ $(document).ready(function(){
         var current = Image.attr('src');
         var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
         Image.attr('src', newsrc);
-
-        // var imageElement = $('#image');
-        //     var currentSrc = imageElement.attr('src');
-        //     var newSrc = currentSrc.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
-        //     imageElement.attr('src', newSrc);
+        var carouselItems = $('.carousel-item');
+        carouselItems.each(function(index, item){
+            var currentSrc = $(item).find('img').attr('src');
+            
+            // Update each image individually based on the mode
+            switch(index) {
+                case 0:
+                    $(item).find('img').attr('src', currentSrc.includes('slide2.png') ? 'images/slide1.png' : 'images/slide2.png');
+                    break;
+                case 1:
+                    $(item).find('img').attr('src', currentSrc.includes('3.png') ? 'images/4.png' : 'images/3.png');
+                    break;
+                case 2:
+                    $(item).find('img').attr('src', currentSrc.includes('6.png') ? 'images/5.png' : 'images/6.png');
+                    break;
+            }
+        });
+  
+      
     });
 });
 </script>
