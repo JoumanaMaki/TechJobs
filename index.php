@@ -157,7 +157,9 @@ if(isset($_SESSION['login_id'])){
   </button>
 </div>
 
-
+<div class="container-fluid text-white text-center light-mode" >
+  <h1 class="light-mode" >Tech Jobs</h1>
+  <div>
 <script>
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
