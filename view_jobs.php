@@ -235,12 +235,14 @@ if(isset($_SESSION['login_id'])){
     </div>
 
     <div class="col-md-2 mt-5">
-           
-                <label for="is_published" class="form-check-label light-mode">Published Only</label>
-                <input type="checkbox" class="form-check-input" id="is_published">
-            </div>
+    <label class="form-check-label light-mode">
+        <input type="radio" name="publishFilter" value="1" class="form-check-input" id="publishedOnly"> Published Only
+    </label>
 
-
+    <label class="form-check-label light-mode">
+        <input type="radio" name="publishFilter" value="0" class="form-check-input" id="both"> Both
+    </label>
+</div>
             <div class="col-md-2 mt-3">
            
          
@@ -447,6 +449,47 @@ if(isset($_SESSION['login_id'])){
 
 <script>
 
+function filterTable() {
+    var majorFilter = $('#majorFilter').val();
+    var locationFilter = $('#locationFilter').val();
+    var typeFilter = $('#typeFilter').val();
+    var publishFilter = $('input[name="publishFilter"]:checked').val();
+    console.log({
+    "major": majorFilter,
+    "location": locationFilter,
+    "type": typeFilter,
+    "publish": publishFilter
+});
+    // Loop through each row in the table and show/hide based on filters
+    $('table tbody tr').each(function() {
+        var majorId = $(this).data('major_id');
+        var locationId = $(this).data('location_id');
+        var typeId = $(this).data('type_id');
+        var isPublished = $(this).data('is_published');
+
+        var majorMatch = majorFilter === '' || majorId == majorFilter;
+        var locationMatch = locationFilter === '' || locationId == locationFilter;
+        var typeMatch = typeFilter === '' || typeId == typeFilter;
+        var publishMatch = publishFilter === undefined || publishFilter == '1' || isPublished == '1';
+
+        if (majorMatch && locationMatch && typeMatch && publishMatch) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+
+        console.log({
+            "majorId": majorId,
+            "locationId": locationId,
+            "typeId": typeId,
+            "isPublished": publishMatch
+        });
+    });
+}
+
+
+
+
 function editJob(id, name, company_name, requirements, objectives, major_id, city_id, image_url, author_id, is_published, email, phone, type_id, description, salary) {
 
     $('#editTypeId').val(id);
@@ -497,37 +540,14 @@ $(document).ready(function(){
 
       
 
-});
-function filterTable() {
-    var majorFilter = $('#majorFilter').val();
-    var locationFilter = $('#locationFilter').val();
-    var typeFilter = $('#typeFilter').val();
-    var isPublishedFilter = $('#is_published').prop('checked') ? '1' : '0';
 
-    // Loop through each row in the table and show/hide based on filters
-    $('table tbody tr').each(function() {
-        var majorId = $(this).data('major_id');
-        var locationId = $(this).data('location_id');
-        var typeId = $(this).data('type_id');
-        var isPublished = $(this).data('is_published');
+// $('#is_published').on('change', function() {
+//     filterTable();
+// });
 
-        var majorMatch = majorFilter === '' || majorId == majorFilter;
-        var locationMatch = locationFilter === '' || locationId == locationFilter;
-        var typeMatch = typeFilter === '' || typeId == typeFilter;
-        var isPublishedMatch = isPublishedFilter === '' || isPublished == isPublishedFilter;
-
-        if (majorMatch && locationMatch && typeMatch && isPublishedMatch) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
-    });
-}
-
-$('#is_published').on('change', function() {
+$('input[name="publishFilter"]').on('change', function () {
     filterTable();
 });
-
 // Event listener for major filter
 $('#majorFilter').on('change', function() {
     filterTable();
@@ -543,6 +563,9 @@ $('#typeFilter').on('change', function() {
     filterTable();
 });
 
+
+
+});
 function resetFilters() {
     // Reset the values of all filter elements
     $('#liveSearch').val('');

@@ -70,16 +70,21 @@ if(isset($_SESSION['login_id'])){
   div.light-mode{
       background-color: #D4EAF4;  
   }
+  .row.light{
+      background-color: #0C7474;  
+  }
+  .row.dark{
+      background-color: #D4EAF4;  
+  }
 
-
-  h1.light-mode, h3.light-mode, p.light-mode{
+  h1.light-mode, h3.light-mode, p.light-mode, h4.light-mode, h2.light-mode{
       color: #0C7474
   }
 
   div.dark-mode{
       background-color: #0C7474;  
   }
-  h1.dark-mode, h3.dark-mode, p.dark-mode{
+  h1.dark-mode, h3.dark-mode, p.dark-mode, h4.dark-mode, h2.dark-mode{
       color: #D4EAF4
   }
   
@@ -99,19 +104,15 @@ if(isset($_SESSION['login_id'])){
           <a class="nav-link light-mode" href="index.php">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link light-mode" href="./jobs.php">Jobs</a>
+        </li>  
+        <li class="nav-item">
           <a class="nav-link light-mode" href="./about.php">About</a>
         </li>
         <li class="nav-item">
           <a class="nav-link light-mode" href="./contactus.php">Contact us</a>
         </li>  
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
-          <ul class="dropdown-menu light-mode">
-            <li><a class="dropdown-item light-mode" href="#">Link</a></li>
-            <li><a class="dropdown-item light-mode" href="#">Another link</a></li>
-            <li><a class="dropdown-item light-mode" href="#">A third link</a></li>
-          </ul>
-        </li>
+        
       </ul>
     </div>
 
@@ -157,14 +158,41 @@ if(isset($_SESSION['login_id'])){
   </button>
 </div>
 
-<div class="container-fluid text-white text-center light-mode" >
-  <h1 class="light-mode" >Tech Jobs</h1>
+<div class="container-fluid text-center exception light-mode" >
+  <h2 class="light-mode p-3" >Tech Jobs</h2>
+  <p class="light-mode p-2 fs-5 fw-bold">  
+Discover your dream tech job effortlessly with our user-friendly web app! Browse curated job postings from our administrators and apply with just a few clicks. Elevate your career in the ever-evolving tech landscape – opportunities await!<p>
   <div>
+
+<div class="container-fluid text-center" >
+<div class="row light"> 
+<img class="col-6" src="images/handshake_about.png"> 
+
+<p class="col-6 dark-mode fw-bold" style="margin-top:100px;">In the fast-paced landscape of technological innovation, the demand for skilled professionals has never been greater. Founded in 2023, Tech Jobs emerges as a beacon in the digital realm, carving out a niche as a dynamic platform committed to fostering meaningful connections between employers and tech enthusiasts. Our mission is clear: to bridge the gap in the ever-evolving field of technology, where talent and opportunity converge.
+  <br>
+  <br>
+   <a href="about.php" class="btn dark-mode">About Us </a>
+   </p>
+<div>
+   
+    </div>
+
+
+
+
+    <div class="container-fluid text-center light-mode p-3" >
+<div class="row"> 
+<h2 class="light-mode">Testimonials</h2>
+<div>
+   
+    </div>
 <script>
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
         $('div').toggleClass('light-mode dark-mode');
-        $('h1, h3, p').toggleClass('light-mode dark-mode');
+        $('.row').toggleClass('light dark');
+        $('div.exception').toggleClass('light dark');
+        $('h1, h3, p, h4, h2').toggleClass('light-mode dark-mode');
         $('nav.navbar').toggleClass('light-mode dark-mode');
         $('ul.dropdown-menu').toggleClass('light-mode dark-mode');
         $('a.nav-link, a.navbar-brand, a.btn, a.dropdown-item').toggleClass('light-mode dark-mode');
