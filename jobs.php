@@ -195,12 +195,12 @@
         if ($result->num_rows > 0) {
             echo '<div class="row row-cols-1 row-cols-md-3 mt-3">';
             while ($row = $result->fetch_assoc()) {
-                echo "<div class='card col-4 m-5' style='width: 18rem; cursor: pointer;' onclick='location.href=\"details.php?id={$row['id']}\"'>";
-                echo "<img class='card-img-top' src='{$row['image_url']}' height='300px' alt='Card image cap'>";
+                echo "<div class='card col-4 m-5' style='width: 18rem; cursor: pointer;' >";
+                echo "<img class='card-img-top' src='{$row['image_url']}' height='300px' alt='Card image cap' onclick='location.href=\"details.php?id={$row['id']}\"'>";
                 echo "<div class='card-body'>";
                 echo "<h5 class='card-title'>{$row['name']}</h5>";
                 echo "<p class='card-text'>{$row['description']}</p>";
-                echo "<a href='#' class='btn btn-primary'>Go somewhere</a>";
+                echo "<a href='#' class='btn btn-success' onclick='openApplyModal({$row['id']})'>Go somewhere</a>";
                 echo "</div></div>";
             }
             echo '</div>';
@@ -212,6 +212,44 @@
         ?>
     </div>
     
+
+    <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyModalLabel">Apply for Job</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Your job application form goes here -->
+                <form>
+                    <!-- Add a hidden input field to store the job ID -->
+                    <input type="hidden" id="jobIdInput" name="jobId">
+                    
+                    <!-- Add your form fields here -->
+                    <div class="mb-3">
+                        <label for="applicantName" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="applicantName" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <!-- Add other form fields as needed -->
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
     <script>
         $(document).ready(function(){
             $('#darkModeToggle').on('click', function(){
@@ -233,6 +271,14 @@
             });
         });
     
+        function openApplyModal(jobId) {
+        // Set the job ID in a hidden field in the modal
+        $('#jobIdInput').val(jobId);
+        // Open the modal
+        $('#applyModal').modal('show');
+    }
+
+
         function resetFilters() {
             $('#majorFilter, #cityFilter, #typeFilter').val('');
             $('form').submit();
