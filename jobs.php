@@ -15,6 +15,12 @@
     include "./db_config/connection.php";
     session_start();
 
+    if(isset($_GET['sent'])){
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        Application submitted successfully!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }
     if(isset($_SESSION['login_id'])){
         $src = $_SESSION['image'];
     }
@@ -122,7 +128,7 @@
     <div class="container-fluid text-center">
         <h1 style="font-family: 'Playfair Display', serif; font-weight: bold;">All Jobs</h1>
     
-        <form class="row mb-3 mt-5" method="get" action="">
+        <form id ="jobFilters" class="row mb-3 mt-5" method="get" action="">
             <div class="col-md-3">
                 <label for="majorFilter" class="form-label light-mode fw-bold">Filter by Major:</label>
                 <select class="form-select light-mode" id="majorFilter" name="major">
@@ -191,7 +197,7 @@
         }
     
         $result = $conn->query($sql);
-    
+       
         if ($result->num_rows > 0) {
             echo '<div class="row row-cols-1 row-cols-md-3 mt-3">';
             while ($row = $result->fetch_assoc()) {
@@ -221,29 +227,28 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Your job application form goes here -->
-                <form>
-                    <!-- Add a hidden input field to store the job ID -->
+                <form id="apply" action="apply.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="jobIdInput" name="jobId">
-                    
-                    <!-- Add your form fields here -->
                     <div class="mb-3">
                         <label for="applicantName" class="form-label">Your Name</label>
-                        <input type="text" class="form-control" id="applicantName" required>
+                        <input type="text" class="form-control" id="applicantName" name="applicantName" required>
                     </div>
-
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
-
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
                     </div>
-                    <!-- Add other form fields as needed -->
-
-                    <!-- Submit button -->
+                    <div class="mb-3">
+                        <label for="cv" class="form-label">CV</label>
+                        <input type="file" class="form-control" id="cv" name="cv" required>
+                    </div>
+                    <div class="mb-3">
+                    <label for="message" class="form-label">Motivational Letter</label>
+                    <textarea class="form-control" id="message" rows="4" name="motivation" required></textarea>
+                </div>
                     <button type="submit" class="btn btn-primary">Submit Application</button>
                 </form>
             </div>
@@ -265,23 +270,53 @@
                 var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
                 Image.attr('src', newsrc);
             });
-    
+
             $('#majorFilter, #cityFilter, #typeFilter').change(function () {
-                $('form').submit();
+                if (!$(this).closest('form').is('#apply')) {
+                    $(this).closest('#jobFilters').submit();
+                }
             });
-        });
+            });
     
-        function openApplyModal(jobId) {
-        // Set the job ID in a hidden field in the modal
-        $('#jobIdInput').val(jobId);
-        // Open the modal
-        $('#applyModal').modal('show');
-    }
+            function openApplyModal(jobId) {
+    <?php if (isset($_SESSION['login_id'])) : ?>
+        // Check if the user has already applied for this job
+        var userId = <?php echo $_SESSION['login_id']; ?>;
+        var jobId = jobId;
+
+        $.ajax({
+            type: 'POST',
+            url: 'check_application.php', // Replace with the actual URL
+            data: { userId: userId, jobId: jobId },
+            success: function (response) {
+                if (response === 'applied') {
+                    alert('You have already applied to this job.');
+                } else {
+                    // User hasn't applied, open the apply modal
+                    $('#jobIdInput').val(jobId);
+                    $('#applyModal').modal('show');
+                }
+            },
+            error: function () {
+                alert('Error checking application status.');
+            }
+        });
+    <?php else : ?>
+        var confirmMessage = "Please sign up or log in to apply for this job.";
+        confirmMessage += "\nClick 'OK' to sign up, or 'Cancel' to log in.";
+
+        if (confirm(confirmMessage)) {
+            window.location.href = "sign_up.php";
+        } else {
+            window.location.href = "login.php";
+        }
+    <?php endif; ?>
+}
 
 
         function resetFilters() {
             $('#majorFilter, #cityFilter, #typeFilter').val('');
-            $('form').submit();
+            $('#jobFilters').submit();
         }
     </script>
 </body>

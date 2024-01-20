@@ -169,6 +169,8 @@ if ($result->num_rows > 0) {
 <div class="col-6"> <p class="mt-4"><strong>Phone:</strong> <?php echo $row['phone']; ?></p>
 </div>
 </div>
+
+
 <?php
 };
 $conn->close();

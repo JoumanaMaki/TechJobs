@@ -94,14 +94,12 @@ if(isset($_SESSION['login_id'])){
         }
         main.light-mode,  table.light-mode{
             background-color:#e9f4f9;
-            height: 100vh; 
+            
         }
 
            
         main.dark-mode,  table.dark-mode{
             background-color:#0e8b8b;
-            height: 100vh; 
-
         }
 
         main.light-mode, main.dark-mode {
@@ -261,6 +259,7 @@ if(isset($_SESSION['login_id'])){
                             <th>Type</th>
                             <th>Major</th>
                             <th>Is_Published</th>
+                            <th>Nb of Applicants</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -268,13 +267,8 @@ if(isset($_SESSION['login_id'])){
                         <?php
                        $query = "SELECT * FROM job";
 
-                       // Perform the query
-                       $result = mysqli_query($conn, $query);
-                     
-                       // Loop through the retrieved job data and display it in the table
+                       $result = mysqli_query($conn, $query);               
                        while ($row = mysqli_fetch_assoc($result)) {
-
-                        
                        if($row['is_published'] == 1){
                         $is_published='Yes';
                        }else{
@@ -297,6 +291,10 @@ if(isset($_SESSION['login_id'])){
                         $result3 = mysqli_query($conn, $query3);
                         $row3 = mysqli_fetch_assoc($result3);
                         $id= $row['id'];
+                        $query4 = "SELECT COUNT(*) as nb_applicants FROM applicant where job_id='$id'";
+                        $result4 = mysqli_query($conn, $query4);
+                        $row4 = mysqli_fetch_assoc($result4);
+                        
                         echo "<tr id='locationRow_$id' data-major_id='{$row3['id']}' data-location_id='{$city_id}' data-type_id='{$type_id}' data-is_published='{$row['is_published']}'>";
                         echo "<td><img src='{$row['image_url']}' width=100px height= 100px></td>";
                            echo "<td><a href=job_details.php?ID={$row['id']}>{$row['name']}</a></td>";
@@ -305,6 +303,7 @@ if(isset($_SESSION['login_id'])){
                            echo "<td>{$row2['name']}</td>";
                            echo "<td>{$row3['name']}</td>";
                            echo "<td>{$is_published}</td>";
+                           echo"<td>{$row4['nb_applicants']}</td>";
                            echo "<td><a class='btn btn-primary m-1' href='#' onclick='editJob({$row['id']}, \"{$row['name']}\", \"{$row['company_name']}\", \"{$row['requirements']}\", \"{$row['objectives']}\", {$row['major_id']}, {$row['city_id']}, \"{$row['image_url']}\", {$row['author_id']}, {$row['is_published']}, \"{$row['email']}\", \"{$row['phone']}\",\"{$row['type_id']}\", \"{$row['description']}\", {$row['salary']})'>Edit</a> <a class='btn btn-danger' href='delete_job.php?ID={$row['id']}' >Delete</button></td>";
                            echo "</tr>";
                        }
