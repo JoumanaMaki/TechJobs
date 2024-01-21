@@ -20,6 +20,7 @@ if(isset($_SESSION['login_id'])){
     $src = $_SESSION['image'];
 }
 
+
 ?>
     <style>
 
@@ -142,58 +143,68 @@ if(isset($_SESSION['login_id'])){
 </nav>
 
 
-<!-- Add this code inside the body section of your HTML -->
-<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="images/slide2.png" class="d-block w-100"  height="400px" alt="Slide 1">
+<?php
+
+    $user_id=$_SESSION['login_id'];
+    $sql = "SELECT a.*, a.job_id as job_id, j.name AS job_title, j.company_name AS job_company_name, j.image_url AS image_url
+    FROM applicant a
+    JOIN job j ON a.job_id = j.id
+    WHERE a.user_id = $user_id";
+
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+$applications = $result->fetch_all(MYSQLI_ASSOC);
+} else {
+$applications = []; 
+}
+
+$conn->close();
+?>
+
+<div class="container-fluid">
+    <div class="row mt-3 p-4">
+        <?php
+        if (!empty($applications)) {
+            foreach ($applications as $application) {
+                // Check if the keys exist before accessing them
+                $title = isset($application['job_title']) ? $application['job_title'] : 'N/A';
+                $company_name = isset($application['job_company_name']) ? $application['job_company_name'] : 'N/A';
+                $image_url = isset($application['image_url']) ? $application['image_url'] : 'N/A';
+                $job_id = isset($application['job_id']) ? $application['job_id'] : 'N/A';
+
+                if ($application['is_answered'] == 1 && $application['is_accepted']== 1) {
+                    $status = 'Accepted';
+                    $statusClass = 'text-success';
+                } elseif ($application['is_answered'] == 1 && $application['is_accepted']== 0) {
+                    $status = 'Rejected';
+                    $statusClass = 'text-danger';
+                } else {
+                    $status = 'Pending';
+                    $statusClass = 'text-warning';
+                }
+        ?>
+                <!-- Your card view HTML -->
+                <div class="col-md-4 mb-4 text-center">
+                    <div class="card">
+                        <div class="card-body">
+                           <a href="details.php?id=<?php echo $job_id ?>" > <img src="./<?php echo $image_url ?>" height="300px"/></a>
+                            <h5 class="card-title"><?php echo $title; ?></h5>
+                            <p class="card-text">Company: <?php echo $company_name; ?></p>
+                            <p class="card-text">Status: <span class="<?php echo $statusClass; ?>"><?php echo $status; ?></span></p>
+                        </div>
+                    </div>
+                </div>
+        <?php
+            }
+        } else {
+            echo "<p>No applications found.</p>";
+        }
+        ?>
     </div>
-    <div class="carousel-item">
-      <img src="images/3.png" class="d-block w-100"  height="400px" alt="Slide 2">
-    </div>
-    <div class="carousel-item">
-      <img src="images/6.png" class="d-block w-100" height="400px" alt="Slide 3">
-    </div>
-    <!-- Add more carousel items as needed -->
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
 </div>
 
-<div class="container-fluid text-center exception light-mode" >
-  <h2 class="light-mode p-3" >Tech Jobs</h2>
-  <p class="light-mode p-2 fs-5 fw-bold">  
-Discover your dream tech job effortlessly with our user-friendly web app! Browse curated job postings from our administrators and apply with just a few clicks. Elevate your career in the ever-evolving tech landscape – opportunities await!<p>
-  <div>
-
-<div class="container-fluid text-center" >
-<div class="row light"> 
-<img class="col-6" src="images/handshake_about.png"> 
-
-<p class="col-6 dark-mode fw-bold" style="margin-top:100px;">In the fast-paced landscape of technological innovation, the demand for skilled professionals has never been greater. Founded in 2023, Tech Jobs emerges as a beacon in the digital realm, carving out a niche as a dynamic platform committed to fostering meaningful connections between employers and tech enthusiasts. Our mission is clear: to bridge the gap in the ever-evolving field of technology, where talent and opportunity converge.
-  <br>
-  <br>
-   <a href="about.php" class="btn dark-mode">About Us </a>
-   </p>
-<div>
-   
-    </div>
-
-
-
-
-    <div class="container-fluid text-center light-mode p-3" >
-<div class="row"> 
-<h2 class="light-mode">Testimonials</h2>
-<div>
-   
-    </div>
 <script>
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){

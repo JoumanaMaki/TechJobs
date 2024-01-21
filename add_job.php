@@ -159,16 +159,13 @@ if(isset($_SESSION['login_id'])){
               
     </li>
 
-
+    <li class="nav-item dropdown">
+                <a class="nav-link light-mode" href="viewContactus.php" role="button" >Contact Us</a>
     </li>
-                    <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Contact Us</a>
-                <ul class="dropdown-menu light-mode">
-                    <li><a class="dropdown-item light-mode" href="viewContactus.php">View Contact Us</a></li>
-                
-                    <!-- Add more links as needed -->
-                </ul>
-    </li>
+    
+    <li class="nav-item dropdown">
+                <a class="nav-link light-mode" href="logout.php" role="button">Logout</a>  
+                 </li>
             </div>
 
                     <div id="darkModeToggle" class="dark-mode-toggle" style="display:flex; justify-content:center">

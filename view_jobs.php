@@ -160,16 +160,13 @@ if(isset($_SESSION['login_id'])){
               
     </li>
 
-
+    <li class="nav-item dropdown">
+                <a class="nav-link light-mode" href="viewContactus.php" role="button" >Contact Us</a>
     </li>
-                    <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Contact Us</a>
-                <ul class="dropdown-menu light-mode">
-                    <li><a class="dropdown-item light-mode" href="viewContactus.php">View Contact Us</a></li>
-                
-                    <!-- Add more links as needed -->
-                </ul>
-    </li>
+    
+    <li class="nav-item dropdown">
+                <a class="nav-link light-mode" href="logout.php" role="button">Logout</a>  
+                 </li>
             </div>
 
                     <div id="darkModeToggle" class="dark-mode-toggle" style="display:flex; justify-content:center">
@@ -234,11 +231,11 @@ if(isset($_SESSION['login_id'])){
 
     <div class="col-md-2 mt-5">
     <label class="form-check-label light-mode">
-        <input type="radio" name="publishFilter" value="1" class="form-check-input" id="publishedOnly"> Published Only
+        <input type="radio" name="publishFilter" value="1" class="form-check-input" id="publishedOnly"> Both
     </label>
 
     <label class="form-check-label light-mode">
-        <input type="radio" name="publishFilter" value="0" class="form-check-input" id="both"> Both
+        <input type="radio" name="publishFilter" value="0" class="form-check-input" id="both">Published Only
     </label>
 </div>
             <div class="col-md-2 mt-3">

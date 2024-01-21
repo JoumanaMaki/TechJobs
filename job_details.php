@@ -16,6 +16,7 @@
 include "./db_config/connection.php";
 session_start();
 
+
 if(isset($_SESSION['login_id'])){
     $src = $_SESSION['image'];
 }else{
@@ -305,6 +306,7 @@ $(document).ready(function(){
 
     });
     $(document).on('click', '.motivation-btn', function(){
+        console.log('Motivation button clicked');
         var motivationContent = $(this).data('motivation');
         $('#motivationContent').text(motivationContent);
         $('#motivationModal').modal('show');
@@ -313,15 +315,18 @@ $(document).ready(function(){
 
     $(document).on('click', '.accept-btn', function(){
         var applicantId = $(this).data('applicant-id');
+        var applicantEmail = $(this).closest('tr').find('td:eq(2)').text();
         updateApplicantStatus(applicantId, 1); // 1 represents acceptance
-        sendAcceptanceEmail(applicantId);
+        sendAcceptanceEmail(applicantEmail);
     });
 
     // Click event for reject button
     $(document).on('click', '.reject-btn', function(){
         var applicantId = $(this).data('applicant-id');
         updateApplicantStatus(applicantId, 0); // 0 represents rejection
-        sendRejectionEmail(applicantId);
+        var applicantEmail = $(this).closest('tr').find('td:eq(2)').text();
+       
+        sendRejectionEmail(applicantEmail);
     });
 
     // Function to update applicant status in the database
@@ -329,52 +334,48 @@ $(document).ready(function(){
         
         $.ajax({
             method: 'POST',
-            url: 'update_applicant_status.php', // Replace with your server-side script
+            url: 'update_applicant_status.php',
             data: { id: applicantId, accepted: isAccepted },
             success: function(response) {
-                console.log(response); // Log the response from the server
+                console.log(response); 
             },
             error: function(error) {
-                console.error(error); // Log any errors
+                console.error(error);
             }
         });
     }
 
-    // Function to send acceptance email
-    function sendAcceptanceEmail(applicantId) {
-        $mail = new PHPMailer(true);
 
-    try {
-        //Server settings
-        $mail->SMTPDebug = 0; // Enable verbose debug output for testing (set to 2 for more detailed output)
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';  // Set your SMTP host
-        $mail->SMTPAuth = true;
-        $mail->Username = 'joumana.maki@gmail.com'; // Set your SMTP username
-        $mail->Password = 'aymg aavg slwa skrm'; // Set your SMTP password
-        $mail->SMTPSecure = 'tls'; // Enable TLS encryption, 'ssl' also accepted
-        $mail->Port = 587; // TCP port to connect to
 
-        //Recipients
-        $mail->setFrom('joumana.maki@gmail.com', 'Joumana Makki'); // Set your email and name
-        $mail->addAddress($toEmail); // Add recipient email
+    function sendAcceptanceEmail(toEmail, userId) {
+    $.ajax({
+        method: 'POST',
+        url: 'send_acceptance_email.php',
+        data: { toEmail: toEmail},
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    });
+}
 
-        // Content
-        $mail->isHTML(true); // Set email format to HTML
-        $mail->Subject = 'Email Verification';
-        $mail->Body = 'Click the following link to verify your email: <a href="http://localhost/techjobs/apis/verify.php?user=' . $userId . '">Verify Email</a>';
+// Function to send rejection email
+function sendRejectionEmail(toEmail) {
+    $.ajax({
+        method: 'POST',
+        url: 'send_rejection_email.php',
+        data: { toEmail: toEmail },
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    });
+}
 
-        $mail->send();
-    } catch (Exception $e) {
-        echo 'Error sending email: ' . $mail->ErrorInfo;
-    }
-
-    }
-
-    // Function to send rejection email
-    function sendRejectionEmail(applicantId) {
-        // Implement email sending logic here for rejected applicants
-    }
 });
 </script>
 </body>
