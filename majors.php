@@ -134,7 +134,7 @@ if(isset($_SESSION['login_id'])){
         <!-- Sidebar -->
         <nav id="sidebar" class="col-md-3 col-lg-2 light-mode">
             <div class="sidebar-sticky text-center">
-            <a class="navbar-brand light-mode m-5" href="#"><img src="./images/techjob_dK.png" id="logo" width="80px" height="60px" style="margin-top:30px" class="light-mode"></a>
+            <a class="navbar-brand light-mode m-2" href="#"><img src="./images/techjob_dK.png" id="logo" width="80px" height="80px" style="margin-top:30px" class="light-mode"></a>
 
             <p class="light-mode fw-bold mt-3" >Welcome,<br>
                <?php echo $_SESSION['name']?></p>

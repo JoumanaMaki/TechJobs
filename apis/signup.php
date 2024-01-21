@@ -151,6 +151,6 @@ function sendVerificationEmail($toEmail, $userId)
     }
 }
 
-//('Location:../login.php');
+
 ?>
 

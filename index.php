@@ -48,6 +48,13 @@ if(isset($_SESSION['login_id'])){
           display: flex;
           align-items: center;
       }
+      footer.light-mode{
+        background-color: #D4EAF4;  
+    }
+
+    footer.dark-mode{
+        background-color: #0C7474;  
+    }
       a.btn.light-mode{
           background-color: #0C7474;
           color: #D4EAF4;
@@ -142,7 +149,6 @@ if(isset($_SESSION['login_id'])){
 </nav>
 
 
-<!-- Add this code inside the body section of your HTML -->
 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
@@ -154,7 +160,7 @@ if(isset($_SESSION['login_id'])){
     <div class="carousel-item">
       <img src="images/6.png" class="d-block w-100" height="400px" alt="Slide 3">
     </div>
-    <!-- Add more carousel items as needed -->
+  
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -166,14 +172,14 @@ if(isset($_SESSION['login_id'])){
   </button>
 </div>
 
-<div class="container-fluid text-center exception light-mode" >
-  <h2 class="light-mode p-3" >Tech Jobs</h2>
-  <p class="light-mode p-2 fs-5 fw-bold">  
-Discover your dream tech job effortlessly with our user-friendly web app! Browse curated job postings from our administrators and apply with just a few clicks. Elevate your career in the ever-evolving tech landscape – opportunities await!<p>
-  <div>
+<div class="container-fluid text-center exception light-mode p-3" >
+  <h2 class="light-mode " >Tech Jobs</h2>
+  <p class="light-mode fs-5 fw-bold">  
+Discover your dream tech job effortlessly with our user-friendly web app! Browse curated job postings from our administrators and apply with just a few clicks. Elevate your career in the ever-evolving tech landscape – opportunities await!</p>
+    </div>
 
-<div class="container-fluid text-center" >
-<div class="row light"> 
+<div class="container-fluid text-center dark-mode" >
+<div class="row "> 
 <img class="col-6" src="images/handshake_about.png"> 
 
 <p class="col-6 dark-mode fw-bold" style="margin-top:100px;">In the fast-paced landscape of technological innovation, the demand for skilled professionals has never been greater. Founded in 2023, Tech Jobs emerges as a beacon in the digital realm, carving out a niche as a dynamic platform committed to fostering meaningful connections between employers and tech enthusiasts. Our mission is clear: to bridge the gap in the ever-evolving field of technology, where talent and opportunity converge.
@@ -181,7 +187,7 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
   <br>
    <a href="about.php" class="btn dark-mode">About Us </a>
    </p>
-<div>
+    </div>
    
     </div>
 
@@ -194,10 +200,77 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
 <div>
    
     </div>
+
+
+    </div>
+    </div>
+
+
+    
+<footer class="text-center text-lg-start text-muted light-mode">
+  
+  <section class="">
+    <div class="container-fluid text-center text-md-start mt-5">
+    
+      <div class="row mt-3">
+      
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+         
+          <h6 class="text-uppercase fw-bold mb-4 ">
+          Company name
+          </h6>
+          <p class="light-mode">
+            Here you can use rows and columns to organize your footer content. Lorem ipsum
+            dolor sit amet, consectetur adipisicing elit.
+          </p>
+        </div>
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          
+          <h6 class="text-uppercase fw-bold mb-4 light-mode">
+            Products
+          </h6>
+          <p>
+            <a href="#!" class="light-mode">Angular</a>
+          </p>
+          <p>
+            <a href="#!" class="light-mode">React</a>
+          </p>
+          <p>
+            <a href="#!" class="light-mode">Vue</a>
+          </p>
+          <p>
+            <a href="#!" class="light-mode">Laravel</a>
+          </p>
+        </div>
+       
+
+       
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+         
+          <h6 class="text-uppercase fw-bold mb-4 light-mode">Contact</h6>
+          <p class="light-mode"> New York, NY 10012, US</p>
+          <p class="light-mode">
+            <i class="fas fa-envelope me-3"></i>
+            info@example.com
+          </p>
+          <p class="light-mode"><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+        </div>
+      </div>
+    
+    </div>
+  </section>
+
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2023 Copyright:
+    <a class="text-reset fw-bold light-mode" href="index.php">techjob@job.com</a>
+  </div>
+ 
+</footer>
+
 <script>
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
-        $('div').toggleClass('light-mode dark-mode');
+        $('div, footer').toggleClass('light-mode dark-mode');
         $('.row').toggleClass('light dark');
         $('div.exception').toggleClass('light dark');
         $('h1, h3, p, h4, h2').toggleClass('light-mode dark-mode');

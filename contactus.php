@@ -122,19 +122,23 @@ if(isset($_SESSION['login_id'])){
           <a class="nav-link light-mode" href="index.php">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link light-mode" href="./jobs.php">Jobs</a>     
+        </li>  
+        <li class="nav-item">
           <a class="nav-link light-mode" href="./about.php">About</a>
         </li>
         <li class="nav-item">
           <a class="nav-link light-mode" href="./contactus.php">Contact us</a>
         </li>  
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
-          <ul class="dropdown-menu light-mode">
-            <li><a class="dropdown-item light-mode" href="#">Link</a></li>
-            <li><a class="dropdown-item light-mode" href="#">Another link</a></li>
-            <li><a class="dropdown-item light-mode" href="#">A third link</a></li>
-          </ul>
-        </li>
+        
+        <?php if (isset($_SESSION['login_id'])) : ?>
+    <li class="nav-item">
+        <a class="nav-link light-mode" href="./users_applications.php">My Applications</a>
+    </li>
+</ul>
+</div>
+<?php endif; ?>
+
       </ul>
     </div>
 
@@ -158,24 +162,20 @@ if(isset($_SESSION['login_id'])){
 
 
 
-
 <section class="container-fluid light-mode">
 
    
     <h2 class="h1-responsive font-weight-bold text-center p-3 light-mode">Contact us</h2>
-    <!--Section description-->
     <h4 class="text-center w-responsive mx-auto mb-5 light-mode">Feel Free to send Us a message!</h4>
 
     <div class="row light-mode p-3">
 
-        <!--Grid column-->
         <div class="col-9 mb-5">
             <form id="contact-form" name="contact-form" action="./apis/contact_us.php" method="POST">
 
-                <!--Grid row-->
+             
                 <div class="row">
 
-                    <!--Grid column-->
                     <div class="col-md-6">
                         <div class="md-form mb-0">
                         <label for="name" class="light-mode fw-bold">Your name</label>
@@ -183,9 +183,6 @@ if(isset($_SESSION['login_id'])){
                           
                         </div>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-md-6">
                         <div class="md-form mb-0">
                         <label for="email" class="light-mode fw-bold">Your email</label>
@@ -193,12 +190,11 @@ if(isset($_SESSION['login_id'])){
                            
                         </div>
                     </div>
-                    <!--Grid column-->
+                   
 
                 </div>
-                <!--Grid row-->
+             
 
-                <!--Grid row-->
                 <div class="row">
                     <div class="col-md-12">
                         <div class="md-form mb-0">
@@ -208,12 +204,10 @@ if(isset($_SESSION['login_id'])){
                         </div>
                     </div>
                 </div>
-                <!--Grid row-->
-
-                <!--Grid row-->
+              
                 <div class="row">
 
-                    <!--Grid column-->
+                  
                     <div class="col-md-12">
 
                         <div class="md-form">
@@ -224,19 +218,17 @@ if(isset($_SESSION['login_id'])){
 
                     </div>
                 </div>
-                <!--Grid row-->
+          
                 <div class="text-center text-md-left">
-                <!-- <a class="btn btn-light light-mode m-3" onclick="document.getElementById('contact-form').submit();">Send</a> -->
-        <button class="btn btn-light light-mode m-3" type="submit">Send</button>
+        <button class="btn btn-light light-mode mt-3" type="submit">Send</button>
            
             </form>
+            
             </div>
            
-            <div class="status text-center" style="color:red"></div>
+            <p class="status text-center" style="color:red"></p>
         </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
+       
         <div class="col-3 text-center mt-5">
             <ul class="list-unstyled mb-0">
                 <li><i class="fas fa-map-marker-alt"></i>
@@ -252,12 +244,75 @@ if(isset($_SESSION['login_id'])){
                 </li>
             </ul>
         </div>
-        <!--Grid column-->
+      
 
+   
+
+
+
+
+<footer class="text-center text-lg-start text-muted light-mode">
+  
+  <section class="">
+    <div class="container-fluid text-center text-md-start mt-5">
+    
+      <div class="row mt-3">
+      
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+         
+          <h6 class="text-uppercase fw-bold mb-4 ">
+          Company name
+          </h6>
+          <p class="light-mode">
+            Here you can use rows and columns to organize your footer content. Lorem ipsum
+            dolor sit amet, consectetur adipisicing elit.
+          </p>
+        </div>
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          
+          <h6 class="text-uppercase fw-bold mb-4 light-mode">
+            Products
+          </h6>
+          <p>
+            <a href="#!" class="light-mode">Angular</a>
+          </p>
+          <p>
+            <a href="#!" class="light-mode">React</a>
+          </p>
+          <p>
+            <a href="#!" class="light-mode">Vue</a>
+          </p>
+          <p>
+            <a href="#!" class="light-mode">Laravel</a>
+          </p>
+        </div>
+       
+
+       
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+         
+          <h6 class="text-uppercase fw-bold mb-4 light-mode">Contact</h6>
+          <p class="light-mode"> New York, NY 10012, US</p>
+          <p class="light-mode">
+            <i class="fas fa-envelope me-3"></i>
+            info@example.com
+          </p>
+          <p class="light-mode"><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+        </div>
+      </div>
+    
     </div>
+  </section>
+
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2023 Copyright:
+    <a class="text-reset fw-bold light-mode" href="index.php">techjob@job.com</a>
+  </div>
+ 
+</footer>
+</div>
 
 </section>
-
 
 <script>
 $(document).ready(function(){

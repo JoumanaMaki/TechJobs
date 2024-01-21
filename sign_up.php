@@ -111,7 +111,9 @@
                     </div>
                         <button type="submit"  class="btn light-mode">Sign Up</button>
                     </form>
-        
+                    <p class="mt-3 fw-bold" style="margin-left:230px">Already have an account? <a href="login.php" class="light-mode">Login here</a></p>
+                    <p class="mt-3 fw-bold" style="margin-left:230px">Account not verified? <a href="send_verification.php" class="light-mode">Activate</a></p>
+
             </div>
         </div>
 
@@ -125,6 +127,8 @@
 <div id="darkModeToggle" class="dark-mode-toggle">
     <span class="dark-mode-icon">&#9788;</span>
 </div>
+
+
 
 <script>
   function showErrorAlert(message) {

@@ -108,19 +108,23 @@ if(isset($_SESSION['login_id'])){
           <a class="nav-link light-mode" href="index.php">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link light-mode" href="./jobs.php">Jobs</a>
+        </li>  
+        <li class="nav-item">
           <a class="nav-link light-mode" href="./about.php">About</a>
         </li>
         <li class="nav-item">
           <a class="nav-link light-mode" href="./contactus.php">Contact us</a>
         </li>  
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
-          <ul class="dropdown-menu light-mode">
-            <li><a class="dropdown-item light-mode" href="#">Link</a></li>
-            <li><a class="dropdown-item light-mode" href="#">Another link</a></li>
-            <li><a class="dropdown-item light-mode" href="#">A third link</a></li>
-          </ul>
-        </li>
+        
+        <?php if (isset($_SESSION['login_id'])) : ?>
+    <li class="nav-item">
+        <a class="nav-link light-mode" href="./users_applications.php">My Applications</a>
+    </li>
+</ul>
+</div>
+<?php endif; ?>
+
       </ul>
     </div>
 
@@ -145,8 +149,7 @@ if(isset($_SESSION['login_id'])){
     <img id="image" src="images/techjob_dK.png" height="300px">
 </center>
   <h1 class="light-mode" style="margin-top:20px">Tech Jobs</h1>
-<!-- </div> -->
-<!-- <div class="container-fluid text-center light-mode"> -->
+
   <div class="row mt-5">
     <div class="col-sm-4">
       <h3 class="light-mode">Column 1</h3>
@@ -165,17 +168,15 @@ if(isset($_SESSION['login_id'])){
 
 
 
-
-<!-- Footer -->
 <footer class="text-center text-lg-start text-muted light-mode">
   
   <section class="">
     <div class="container text-center text-md-start mt-5">
-      <!-- Grid row -->
+    
       <div class="row mt-3">
-        <!-- Grid column -->
+      
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-          <!-- Content -->
+         
           <h6 class="text-uppercase fw-bold mb-4 light-mode">
           Company name
           </h6>
@@ -184,11 +185,8 @@ if(isset($_SESSION['login_id'])){
             dolor sit amet, consectetur adipisicing elit.
           </p>
         </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
+          
           <h6 class="text-uppercase fw-bold mb-4 light-mode">
             Products
           </h6>

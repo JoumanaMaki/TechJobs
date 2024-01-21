@@ -130,10 +130,10 @@ if(isset($_SESSION['login_id'])){
     
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
+        
         <nav id="sidebar" class="col-md-3 col-lg-2 light-mode">
             <div class="sidebar-sticky text-center">
-            <a class="navbar-brand light-mode m-5" href="#"><img src="./images/techjob_dK.png" id="logo" width="80px" height="60px" style="margin-top:30px" class="light-mode"></a>
+            <a class="navbar-brand light-mode m-2" href="#"><img src="./images/techjob_dK.png" id="logo" width="80px" height="80px" style="margin-top:30px" class="light-mode"></a>
 
             <p class="light-mode fw-bold mt-3" >Welcome,<br>
                <?php echo $_SESSION['name']?></p>
@@ -143,12 +143,10 @@ if(isset($_SESSION['login_id'])){
                 <ul class="dropdown-menu light-mode">
                     <li><a class="dropdown-item light-mode" href="add_job.php">Add Job</a></li>
                     <li><a class="dropdown-item light-mode" href="view_jobs.php">View Jobs</a></li>
-                    <!-- Add more links as needed -->
                 </ul>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link light-mode" href="majors.php" role="button" >Major</a>
-                    <!-- Add more links as needed -->
               
                     </li>
                     <li class="nav-item">
@@ -191,7 +189,6 @@ if(isset($_SESSION['login_id'])){
         <select class="form-select" id="majorFilter">
             <option value="">All Majors</option>
             <?php
-                // Fetch majors from the database and populate the dropdown
                 $majorQuery = "SELECT * FROM major";
                 $majorResult = mysqli_query($conn, $majorQuery);
                 while ($majorRow = mysqli_fetch_assoc($majorResult)) {
@@ -219,7 +216,6 @@ if(isset($_SESSION['login_id'])){
         <select class="form-select" id="typeFilter">
             <option value="">All Types</option>
             <?php
-                // Fetch types from the database and populate the dropdown
                 $typeQuery = "SELECT * FROM type";
                 $typeResult = mysqli_query($conn, $typeQuery);
                 while ($typeRow = mysqli_fetch_assoc($typeResult)) {
@@ -314,9 +310,6 @@ if(isset($_SESSION['login_id'])){
 </div>
 
 
-
-
-<!-- editTypeModal -->
 <div id="editJobModal" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -441,8 +434,6 @@ if(isset($_SESSION['login_id'])){
     </div>
 </div>
 
-
-
 <script>
 
 function filterTable() {
@@ -456,7 +447,7 @@ function filterTable() {
     "type": typeFilter,
     "publish": publishFilter
 });
-    // Loop through each row in the table and show/hide based on filters
+   
     $('table tbody tr').each(function() {
         var majorId = $(this).data('major_id');
         var locationId = $(this).data('location_id');
@@ -501,7 +492,7 @@ function editJob(id, name, company_name, requirements, objectives, major_id, cit
     $('#editDescription').val(description);
     $('#editis_published').prop('checked', is_published == 1);
     $('#editimageurl').attr('src', image_url);
-    var jobType = type_id; // Replace this with the actual variable representing job type
+    var jobType = type_id; 
     $('input[name="editJobType"]').filter('[value="' + jobType + '"]').prop('checked', true);
         $('#editJobModal').modal('show');
     }
@@ -534,27 +525,18 @@ $(document).ready(function(){
         });
     });
 
-      
-
-
-// $('#is_published').on('change', function() {
-//     filterTable();
-// });
 
 $('input[name="publishFilter"]').on('change', function () {
     filterTable();
 });
-// Event listener for major filter
 $('#majorFilter').on('change', function() {
     filterTable();
 });
 
-// Event listener for location filter
 $('#locationFilter').on('change', function() {
     filterTable();
 });
 
-// Event listener for type filter
 $('#typeFilter').on('change', function() {
     filterTable();
 });
