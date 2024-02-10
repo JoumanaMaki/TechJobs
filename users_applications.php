@@ -199,7 +199,7 @@ $conn->close();
         <?php
             }
         } else {
-            echo "<p>No applications found.</p>";
+            echo "<img src='./images/no_Results.jpg' width=100px height=400px>";
         }
         ?>
     </div>
