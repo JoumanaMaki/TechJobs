@@ -151,19 +151,15 @@ if(isset($_SESSION['login_id'])){
   <h1 class="light-mode" style="margin-top:20px">Tech Jobs</h1>
 
   <div class="row mt-5">
-    <div class="col-sm-4">
-      <h3 class="light-mode">Column 1</h3>
-      <p class="light-mode">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p class="light-mode">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    <div class="col-sm-6">
+      <h3 class="light-mode">Mission</h3>
+      <p class="light-mode">The mission of our platform is to empower individuals in the tech field by providing them with the tools and resources they need to efficiently apply for multiple jobs. We aim to streamline the job application process, making it easier for candidates to discover new opportunities, showcase their skills and experience, and connect with potential employers. Our goal is to help users find their ideal tech jobs faster, while also assisting companies in finding the best talent for their teams. Ultimately, we strive to facilitate meaningful connections between talented professionals and innovative companies, driving growth and success in the tech industry.</p>
     </div>
-    <div class="col-sm-4">
-      <h3 class="light-mode">Column 2</h3>
-      <p class="light-mode">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+    <div class="col-sm-6">
+      <h3 class="light-mode">Vision</h3>
+      <p class="light-mode">Our vision is to revolutionize the way individuals navigate their careers in the tech industry. We envision a future where job seekers have access to a centralized platform that not only simplifies the job application process but also provides personalized career guidance and support. Through advanced algorithms and AI-driven recommendations, we aim to match candidates with opportunities that align with their skills, interests, and career aspirations. Additionally, we aspire to foster a vibrant community where users can network, share insights, and collaborate to advance their careers. Ultimately, our vision is to empower every individual in the tech field to achieve their full potential and thrive in a rapidly evolving industry.</p>
     </div>
-    <div class="col-sm-4">
-      <h3 class="light-mode">Column 3</h3>        
-      <p class="light-mode">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-    </div>
+
   </div>
 
 
