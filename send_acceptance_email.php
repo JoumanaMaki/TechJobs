@@ -1,18 +1,17 @@
 <?php
 
-
 require './PHPMailer/src/SMTP.php';
 require './PHPMailer/src/Exception.php';
 require './PHPMailer/src/PHPMailer.php';
 
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-// Assuming you have the recipient email and user ID sent from your JavaScript
+
 $toEmail = $_POST['toEmail'];
+$jobId = $_POST['jobId'];
+$jobName = $_POST['jobName'];
 
 
-// Initialize PHPMailer
 $mail = new PHPMailer(true);
 
 try {
@@ -26,13 +25,13 @@ try {
     $mail->Port = 587; // TCP port to connect to
 
     // Recipients
-    $mail->setFrom('joumana.maki@gmail.com ', 'Jobs Tech'); // Set your email and name
+    $mail->setFrom('joumana.maki@gmail.com', 'Jobs Tech'); 
     $mail->addAddress($toEmail); // Add recipient email
 
     // Content
     $mail->isHTML(true);
     $mail->Subject = 'Job Application Accepted';
-    $mail->Body = 'Congratulations! Your job application has been accepted. Click the following link to view details: <a href="http://localhost/techjobs/applicant_details.php?user=' . $userId . '">View Details</a>';
+    $mail->Body = 'Congratulations! Your application for the job <strong>' . $jobName . '</strong> has been accepted.';
 
     // Send the email
     $mail->send();

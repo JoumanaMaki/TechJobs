@@ -235,7 +235,7 @@ if ($result->num_rows > 0) {
 </div>
 
 <div class="row mt-5 text-center">
-    <div class="col-md-12">
+    <div class="col-12">
         <h3>Applicants for this Job</h3>
         <?php
       
@@ -255,6 +255,7 @@ if ($result->num_rows > 0) {
             echo '<th>Email</th>';
             echo '<th>Phone</th>';
             echo '<th>CV</th>';
+            echo '<th>Response</th>';
             echo '<th>Actions</th>';
             echo '</tr>';
             echo '</thead>';
@@ -267,6 +268,16 @@ if ($result->num_rows > 0) {
                 echo '<td>' . $applicantRow['email'] . '</td>';
                 echo '<td>' . $applicantRow['phone'] . '</td>';
                 echo '<td><a href="' . $applicantRow['cv'] . '" target="_blank">View CV</a></td>';
+                if ($applicantRow['is_answered']) {
+                    // Check if the applicant is accepted or rejected
+                    if ($applicantRow['is_accepted']) {
+                        echo '<td>Accepted</td>';
+                    } else {
+                        echo '<td>Rejected</td>';
+                    }
+                } else {
+                    echo '<td>Not Answered</td>';
+                }
                 echo '<td>';
                 echo '<button class="btn btn-success accept-btn m-2" data-applicant-id="' . $applicantRow['user_id'] . '">Accept</button>';
                 echo '<button class="btn btn-danger reject-btn" data-applicant-id="' . $applicantRow['user_id'] . '">Reject</button>';
@@ -316,17 +327,22 @@ $(document).ready(function(){
     $(document).on('click', '.accept-btn', function(){
         var applicantId = $(this).data('applicant-id');
         var applicantEmail = $(this).closest('tr').find('td:eq(2)').text();
+
+        var jobId = <?php echo $id; ?>; // Get the job ID from PHP
+    var jobName = '<?php echo $row['name']; ?>'
         updateApplicantStatus(applicantId, 1); // 1 represents acceptance
-        sendAcceptanceEmail(applicantEmail);
+        sendAcceptanceEmail(applicantEmail, jobId, jobName);
     });
 
     // Click event for reject button
     $(document).on('click', '.reject-btn', function(){
         var applicantId = $(this).data('applicant-id');
-        updateApplicantStatus(applicantId, 0); // 0 represents rejection
         var applicantEmail = $(this).closest('tr').find('td:eq(2)').text();
-       
-        sendRejectionEmail(applicantEmail);
+        var jobId = <?php echo $id; ?>; // Get the job ID from PHP
+    var jobName = '<?php echo $row['name']; ?>'; // Get the job name from PHP
+    updateApplicantStatus(applicantId, 0); // 0 represents rejection
+    sendRejectionEmail(applicantEmail, jobId, jobName); // Pass job details to the function
+
     });
 
     // Function to update applicant status in the database
@@ -337,7 +353,7 @@ $(document).ready(function(){
             url: 'update_applicant_status.php',
             data: { id: applicantId, accepted: isAccepted },
             success: function(response) {
-                console.log(response); 
+                location.reload();
             },
             error: function(error) {
                 console.error(error);
@@ -347,11 +363,11 @@ $(document).ready(function(){
 
 
 
-    function sendAcceptanceEmail(toEmail, userId) {
+    function sendAcceptanceEmail(toEmail, jobId, jobName) {
     $.ajax({
         method: 'POST',
         url: 'send_acceptance_email.php',
-        data: { toEmail: toEmail},
+        data: { toEmail: toEmail, jobId: jobId, jobName: jobName }, // Pass job details as data
         success: function(response) {
             console.log(response);
         },
@@ -362,11 +378,11 @@ $(document).ready(function(){
 }
 
 // Function to send rejection email
-function sendRejectionEmail(toEmail) {
+function sendRejectionEmail(toEmail, jobId, jobName) {
     $.ajax({
         method: 'POST',
         url: 'send_rejection_email.php',
-        data: { toEmail: toEmail },
+        data: { toEmail: toEmail, jobId: jobId, jobName: jobName }, // Pass job details as data
         success: function(response) {
             console.log(response);
         },

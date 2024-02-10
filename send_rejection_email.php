@@ -11,7 +11,10 @@ use PHPMailer\PHPMailer\Exception;
 
 // Get the recipient email from the POST data
 $toEmail = $_POST['toEmail'];
+$jobId = $_POST['jobId'];
+$jobName = $_POST['jobName'];
 
+echo $jobName;
 // Function to send rejection email
 function sendRejectionEmail($toEmail) {
     $mail = new PHPMailer(true);
@@ -34,7 +37,7 @@ function sendRejectionEmail($toEmail) {
         // Content
         $mail->isHTML(true); // Set email format to HTML
         $mail->Subject = 'Job Application Rejected';
-        $mail->Body = 'We regret to inform you that your job application has been rejected.';
+        $mail->Body = 'We regret to inform you that your application for the job <strong>' . $jobName . '</strong> has been rejected.';
 
         $mail->send();
         echo 'Email sent successfully';
