@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <?php 
     include "./db_config/connection.php";
     session_start();
@@ -136,10 +136,11 @@
         <div class="col-4">    <a  href="#" role="button" id="profileDropdown" >
             <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
         </a></div>
-        <div class="col-6"  >    <a href="logout.php" role="button" id="profileDropdown">
-            <img src="images/mission.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
-        </a>
+        <div class="col-4"  >    <a href="logout.php" role="button" id="profileDropdown">
+            <img src="images/logout.png" alt="Avatar Logo" style="width:40px;margin-left:10px" >
+             </a>
     </div></div>
+    </div> 
     </div> 
     <?php else : ?>
      

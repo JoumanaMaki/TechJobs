@@ -137,10 +137,12 @@ if(isset($_SESSION['login_id'])){
     </li>
 </ul>
 </div>
-<?php endif; ?>
+<?php else : ?>
 
-      </ul>
-    </div>
+</ul>
+</div>
+
+<?php endif; ?>
 
 
     <?php if (!empty($src)) : ?>

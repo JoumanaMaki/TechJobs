@@ -126,12 +126,12 @@ if(isset($_SESSION['login_id'])){
     </li>
 </ul>
 </div>
-<?php endif; ?>
+<?php else : ?>
 
       </ul>
     </div>
 
-
+    <?php endif; ?>
     <?php if (!empty($src)) : ?>
       <div class="dropdown" >
         <div class="row">
@@ -141,7 +141,8 @@ if(isset($_SESSION['login_id'])){
         <div class="col-6"  >    <a href="logout.php" role="button" id="profileDropdown">
             <img src="images/mission.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
         </a>
-    </div></div>
+    </div>
+  </div>
     </div>
     <?php else : ?>
      

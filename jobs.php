@@ -117,11 +117,12 @@
     </li>
 </ul>
 </div>
+<?php else : ?>
+
+</ul>
+</div>
+
 <?php endif; ?>
-
-      </ul>
-    </div>
-
 
     <?php if (!empty($src)) : ?>
         <div class="dropdown" >
