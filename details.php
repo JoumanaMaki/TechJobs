@@ -119,17 +119,35 @@
                     <li class="nav-item">
                         <a class="nav-link light-mode" href="./contactus.php">Contact us</a>
                     </li>  
-                </ul>
-            </div>
+                    <?php if (isset($_SESSION['login_id'])) : ?>
+    <li class="nav-item">
+        <a class="nav-link light-mode" href="./users_applications.php">My Applications</a>
+    </li>
+</ul>
+</div>
+<?php endif; ?>
 
-            <?php if (!empty($src)) : ?>
-                <a class="navbar-brand" href="#">
-                    <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> 
-                </a>   
-            <?php else : ?>
-                <a class="btn btn-light light-mode" href="./sign_up.php">Login / Sign Up</a>
-            <?php endif; ?>
-        </div>
+      </ul>
+    </div>
+
+    <?php if (!empty($src)) : ?>
+        <div class="dropdown" >
+        <div class="row">
+        <div class="col-4">    <a  href="#" role="button" id="profileDropdown" >
+            <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+        </a></div>
+        <div class="col-6"  >    <a href="logout.php" role="button" id="profileDropdown">
+            <img src="images/mission.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+        </a>
+    </div></div>
+    </div> 
+    <?php else : ?>
+     
+            <a class="btn btn-light light-mode" href="./sign_up.php">Login / Sign Up</a>
+         
+    <?php endif; ?>
+  
+  </div>
         <div id="darkModeToggle" class="dark-mode-toggle">    
             <span class="dark-mode-icon">&#9788;</span>
         </div>
