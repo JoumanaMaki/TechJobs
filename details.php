@@ -131,12 +131,12 @@
     </div>
 
     <?php if (!empty($src)) : ?>
-        <div class="dropdown" >
-        <div class="row">
-        <div class="col-4">    <a  href="#" role="button" id="profileDropdown" >
+        <div class="dropdown " >
+        <div class="row light-mode">
+        <div class="col-6 light-mode">    <a  href="#" role="button" id="profileDropdown" >
             <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
         </a></div>
-        <div class="col-4"  >    <a href="logout.php" role="button" id="profileDropdown">
+        <div class="col-6 light-mode"  >    <a href="logout.php" role="button" id="profileDropdown">
             <img src="images/logout.png" alt="Avatar Logo" style="width:40px;margin-left:10px" >
              </a>
     </div></div>

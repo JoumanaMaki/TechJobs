@@ -133,14 +133,14 @@ if(isset($_SESSION['login_id'])){
 
     <?php endif; ?>
     <?php if (!empty($src)) : ?>
-      <div class="dropdown" >
-        <div class="row">
-        <div class="col-4">    <a  href="#" role="button" id="profileDropdown" >
+      <div class="dropdown " >
+        <div class="row light-mode">
+        <div class="col-6 light-mode">    <a  href="#" role="button" id="profileDropdown" >
             <img src="<?php echo $src; ?>" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
         </a></div>
-        <div class="col-6"  >    <a href="logout.php" role="button" id="profileDropdown">
-            <img src="images/mission.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
-        </a>
+        <div class="col-6 light-mode"  >    <a href="logout.php" role="button" id="profileDropdown">
+            <img src="images/logout.png" alt="Avatar Logo" style="width:40px;margin-left:10px" >
+             </a>
     </div>
   </div>
     </div>
@@ -225,12 +225,10 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
          
           <h6 class="text-uppercase fw-bold mb-4 ">
-          Company name
+          Tech Jobs
           </h6>
           <p class="light-mode">
-            Here you can use rows and columns to organize your footer content. Lorem ipsum
-            dolor sit amet, consectetur adipisicing elit.
-          </p>
+          Tech job platforms provide users with access to a diverse array of opportunities in the ever-expanding tech industry, streamlining the job search process and fostering career growth.   </p>
         </div>
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
           
@@ -238,16 +236,16 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
             Products
           </h6>
           <p>
-            <a href="#!" class="light-mode">Angular</a>
+            <a href="index.php" class="light-mode">HomePage</a>
           </p>
           <p>
-            <a href="#!" class="light-mode">React</a>
+            <a href="jobs.php" class="light-mode">Jobs</a>
           </p>
           <p>
-            <a href="#!" class="light-mode">Vue</a>
+            <a href="about.php" class="light-mode">About Us</a>
           </p>
           <p>
-            <a href="#!" class="light-mode">Laravel</a>
+            <a href="contactus.php" class="light-mode">Contact Us</a>
           </p>
         </div>
        
@@ -256,12 +254,12 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
          
           <h6 class="text-uppercase fw-bold mb-4 light-mode">Contact</h6>
-          <p class="light-mode"> New York, NY 10012, US</p>
+          <p class="light-mode"> Lebanon, LB</p>
           <p class="light-mode">
             <i class="fas fa-envelope me-3"></i>
-            info@example.com
+            techjobs@gmail.com
           </p>
-          <p class="light-mode"><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+          <p class="light-mode"><i class="fas fa-phone me-3"></i> +961 71 887230</p>
         </div>
       </div>
     
