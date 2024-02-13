@@ -99,8 +99,8 @@ if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
             header('Content-Type: application/json');
             echo json_encode(['status' => "success", 'message' => "sign up successful"]);
             sendVerificationEmail($email, $loginId);
-           header('Location:../login.php');
-             exit();
+        //    header('Location:../login.php');
+              exit();
         } else {
            
             sendResponse('error', 'Error inserting new record');

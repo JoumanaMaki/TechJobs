@@ -1,5 +1,5 @@
 <?php
-include "../db_config/connection.php";
+include "./db_config/connection.php";
 
 include "./PHPMailer/src/SMTP.php";
 include "./PHPMailer/src/Exception.php";
@@ -39,6 +39,29 @@ function sendVerificationEmail($toEmail, $userId)
 }
 
 
-$conn->close();
+$email = $_POST['email'];
 
+// Query to fetch user ID based on email
+$query = "SELECT id FROM user_login WHERE email = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->bind_result($userId);
+$stmt->fetch();
+$stmt->close();
+
+// Check if user ID is found
+if ($userId) {
+    // Call the sendVerificationEmail function
+    sendVerificationEmail($email, $userId);
+
+    // Respond with success
+    echo json_encode(['status' => 'success']);
+} else {
+    // Respond with error if user ID not found
+    echo json_encode(['status' => 'error', 'message' => 'User not found']);
+}
+
+// Close database connection
+$conn->close();
 ?>

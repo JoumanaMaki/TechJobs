@@ -73,7 +73,7 @@
                 </div>
                 <div class="card-body">
                   
-                    <form id="signupForm" method="post" action="apis/signup.php" enctype="multipart/form-data">
+                    <form id="signupForm" method="post"  enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="light-mode" for="username">Username:</label>
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -112,7 +112,7 @@
                         <button type="submit"  class="btn light-mode">Sign Up</button>
                     </form>
                     <p class="mt-3 fw-bold" style="margin-left:230px">Already have an account? <a href="login.php" class="light-mode">Login here</a></p>
-                    <p class="mt-3 fw-bold" style="margin-left:230px">Account not verified? <a href="send_verification.php" class="light-mode">Activate</a></p>
+                    <p class="mt-3 fw-bold" style="margin-left:230px">Account not verified? <a href="send_verification.php" id="activateLink" class="light-mode">Activate</a></p>
 
             </div>
         </div>
@@ -206,31 +206,56 @@
             }
         });
 
-    //     $('#signupForm').submit(function (e) {
-    //     e.preventDefault();
+        $('#activateLink').on('click', function (e) {
+        e.preventDefault();
+        var email = $('#email').val(); // Retrieve the value from the input field
+       
+        $.ajax({
+            type: 'POST',
+            url: 'send_verification.php', 
+            dataType: 'json',
+            data: {
+                email: email           },
+            success: function (response) {
+                if (response.status === 'success') {
+                    alert('Verification email sent successfully!');
+                } else {
+                    showErrorAlert(response.message);
+                }
+            },
+            error: function () {
+                alert('Failed to send verification email. Please try again.');
+            }
+        });
+    });
 
-    //     var formData = new FormData(this);
 
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: 'apis/signup.php',
-    //         data: formData,
-    //         contentType: false,
-    //         processData: false,
-    //         dataType: 'json',
-    //         success: function (response) {
-    //             console.log(response);
-    //             if (response.status === 'success') {
-    //                 alert('Signup successful!');
-    //             } else {
-    //                 showErrorAlert(response.message);
-    //             }
-    //         },
-    //         error: function () {
-    //             alert('Signup failed. Please try again.');
-    //         }
-    //     });
-    // });
+        $('#signupForm').submit(function (e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: 'apis/signup.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response.status === 'success') {
+                    alert('Signup successful!');
+                    window.location.href = 'login.php'; 
+                } else {
+                    showErrorAlert(response.message);
+                }
+            },
+            error: function () {
+                alert('Signup failed. Please try again.');
+            }
+        });
+    });
 
 })
   

@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
 
     <?php 
@@ -172,7 +173,95 @@ if(isset($_SESSION['login_id'])){
 
         <!-- Main content -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <!-- Your main content goes here -->
+     
+
+<div class="container mt-5">
+    <div class="row">
+        <?php
+    include "./db_config/connection.php";
+        // Query to get number of jobs
+        $result = $conn->query("SELECT COUNT(*) AS num_jobs FROM job");
+        $row = $result->fetch_assoc();
+        $numJobs = $row["num_jobs"];
+
+        // Query to get number of applicants
+        $result = $conn->query("SELECT COUNT(*) AS num_applicants FROM applicant");
+        $row = $result->fetch_assoc();
+        $numApplicants = $row["num_applicants"];
+
+        // Query to get number of users
+        $result = $conn->query("SELECT COUNT(*) AS num_users FROM user_login");
+        $row = $result->fetch_assoc();
+        $numUsers = $row["num_users"];
+
+        // Query to get number of reviews
+        $result = $conn->query("SELECT COUNT(*) AS num_reviews FROM contact_us");
+        $row = $result->fetch_assoc();
+        $numReviews = $row["num_reviews"];
+
+        // Query to get latest 2 jobs
+        $result = $conn->query("SELECT * FROM job ORDER BY id DESC LIMIT 2");
+        $latestJobs = array();
+        while ($row = $result->fetch_assoc()) {
+            $latestJobs[] = $row;
+        }
+
+        // Close database connection
+        $conn->close();
+        ?>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Number of Jobs</h5>
+                    <p class="card-text">Total: <?php echo $numJobs; ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Number of Applicants</h5>
+                    <p class="card-text">Total: <?php echo $numApplicants; ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Number of Users</h5>
+                    <p class="card-text">Total: <?php echo $numUsers; ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Number of Reviews</h5>
+                    <p class="card-text">Total: <?php echo $numReviews; ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Latest Jobs
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <?php foreach($latestJobs as $job): ?>
+                        <li class="list-group-item"><?php echo $job['title']; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
         </main>
     </div>
 </div>

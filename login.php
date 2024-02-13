@@ -87,7 +87,8 @@
                       
                         <button type="submit"  class="btn light-mode">Log In</button>
                     </form>
-                    <p class="mt-3 fw-bold" style="margin-left:230px">Create account? <a href="sign_up.php" class="light-mode">Login here</a></p>
+                    <p class="mt-3 fw-bold" style="margin-left:230px">Create account? <a href="sign_up.php" class="light-mode">Sign Up here</a></p>
+                    <p class="mt-3 fw-bold" style="margin-left:230px">Account not verified? <a href="send_verification.php" id="activateLink" class="light-mode">Activate</a></p>
 
             </div>
         </div>
@@ -127,6 +128,30 @@ function showErrorAlert(message) {
             var newSrc = currentSrc.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
             imageElement.attr('src', newSrc);
         });
+
+        $('#activateLink').on('click', function (e) {
+        e.preventDefault();
+        var email = $('#email').val(); // Retrieve the value from the input field
+       
+        $.ajax({
+            type: 'POST',
+            url: 'send_verification.php', 
+            dataType: 'json',
+            data: {
+                email: email           },
+            success: function (response) {
+                if (response.status === 'success') {
+                    alert('Verification email sent successfully!');
+                } else {
+                    showErrorAlert(response.message);
+                }
+            },
+            error: function () {
+                alert('Failed to send verification email. Please try again.');
+            }
+        });
+    });
+
   
 
 $('#logInForm').submit(function (e) {
