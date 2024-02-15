@@ -37,6 +37,7 @@ if($result->num_rows > 0){
             }
       
           $_SESSION['login_id'] = $user['id'];
+          $_SESSION['dialog'] = false;
           $_SESSION['image']=$user1['img_url'];
           $_SESSION['name']=$user1['username'];
           header('Content-type: application/json');

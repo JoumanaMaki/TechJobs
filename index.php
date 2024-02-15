@@ -18,12 +18,19 @@ session_start();
 
 if(isset($_SESSION['login_id'])){
     $src = $_SESSION['image'];
+
+
+
+    
 }
 
 
 
 
 ?>
+
+
+
     <style>
 
       .dark-mode-toggle {
@@ -102,6 +109,48 @@ if(isset($_SESSION['login_id'])){
   </style> 
 </head>
 <body>
+
+
+<!-- Add the popup dialog HTML markup -->
+<?php if ($_SESSION['dialog'] === false): ?>
+    <div id="popupDialog" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yous Feedback is valuable</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form id="feedbackForm">
+                        <div class="mb-3">
+                            <label for="feedbackInput" class="form-label">Feedback</label>
+                            <textarea class="form-control" id="feedbackInput" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ratingInput" class="form-label">Rating</label>
+                            <div>
+                                <input type="radio" id="rating1" name="rating" value="1">
+                                <label for="rating1">1</label>
+                                <input type="radio" id="rating2" name="rating" value="2">
+                                <label for="rating2">2</label>
+                                <input type="radio" id="rating3" name="rating" value="3">
+                                <label for="rating3">3</label>
+                                <input type="radio" id="rating4" name="rating" value="4">
+                                <label for="rating4">4</label>
+                                <input type="radio" id="rating5" name="rating" value="5">
+                                <label for="rating5">5</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
 <nav class="navbar navbar-expand-sm light-mode p-3">
   <div class="container-fluid">
     <a class="navbar-brand light-mode" href="#"><img src="./images/techjob_dK.png" id="logo" width="50px" height="40px" class="light-mode"></a>
@@ -310,6 +359,17 @@ $(document).ready(function(){
   
       
     });
+
+    <?php if ($_SESSION['dialog'] === false): ?>
+        $('#popupDialog').modal('show');
+    <?php endif; ?>
+
+    $('#popupDialog').on('hidden.bs.modal', function () {
+        <?php $_SESSION['dialog'] = true; ?>
+    });
+
+
+    
 });
 </script>
 </body>
