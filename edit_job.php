@@ -21,9 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $is_published = $_POST["is_published"];
     $image_url = $_POST["image_url"];
     $type_id = $_POST["type_id"];
-
-    // Perform the necessary database update here
-    // Example: Update the job details in the 'jobs' table
+    
+   
     $query = "UPDATE job SET
         name = '$name',
         company_name = '$company_name',
