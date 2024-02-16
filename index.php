@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-XBJcev6w/iDqdzEy+GQ5BXS3+1GJmnWF8CMn8Pxi7b6Fwt2MD9pCUFdOu0DdIlzdFlNxyXqm0jNMIj+Nu2fv/g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <?php 
 //include "./navbar.php";
@@ -32,6 +33,35 @@ if(isset($_SESSION['login_id'])){
 
 
     <style>
+
+/* Profile image in a circle */
+.profile-image {
+    width: 30px; /* Adjust the size as needed */
+    height: 30px; /* Adjust the size as needed */
+    margin: 0 auto;
+}
+
+.profile-image img {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.card:hover {
+        transform: scale(1.05); /* Scale up the card on hover */
+    }
+    .card:hover {
+        transform: scale(1.05); /* Scale up the card on hover */
+    }
+.rating {
+    margin-top: 10px;
+    font-size: 24px; /* Adjust the font size as needed */
+}
+
+.rating .fa {
+    color: #ffc107; /* Adjust the color of the stars */
+}
+
 
       .dark-mode-toggle {
                 cursor: pointer;
@@ -121,31 +151,31 @@ if(isset($_SESSION['login_id'])){
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <form id="feedbackForm">
+                <form id="feedbackForm" action="submit_feedback.php" method= "post">
                         <div class="mb-3">
                             <label for="feedbackInput" class="form-label">Feedback</label>
-                            <textarea class="form-control" id="feedbackInput" rows="3"></textarea>
+                            <textarea class="form-control" id="feedbackInput" name="feedback" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="ratingInput" class="form-label">Rating</label>
                             <div>
-                                <input type="radio" id="rating1" name="rating" value="1">
+                                <input type="radio" id="rating1" name="rating" value=1>
                                 <label for="rating1">1</label>
-                                <input type="radio" id="rating2" name="rating" value="2">
+                                <input type="radio" id="rating2" name="rating" value=2>
                                 <label for="rating2">2</label>
-                                <input type="radio" id="rating3" name="rating" value="3">
+                                <input type="radio" id="rating3" name="rating" value=3>
                                 <label for="rating3">3</label>
-                                <input type="radio" id="rating4" name="rating" value="4">
+                                <input type="radio" id="rating4" name="rating" value=4>
                                 <label for="rating4">4</label>
-                                <input type="radio" id="rating5" name="rating" value="5">
+                                <input type="radio" id="rating5" name="rating" value=5>
                                 <label for="rating5">5</label>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Submit</button>
-                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+                </form>   </div>
             </div>
         </div>
     </div>
@@ -257,22 +287,68 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
     <div class="container-fluid text-center light-mode p-3" >
 <div class="row"> 
 <h2 class="light-mode">Testimonials</h2>
-<div>
+
+    </div>
+<div class="row">
+        <?php
+        // Retrieve records from the database
+        $sql = "SELECT name, img_url, feedback, rating FROM review WHERE is_published = 1 limit 3";
+        $result = $conn->query($sql);
+
+        // Check if records exist
+        if ($result->num_rows > 0) {
+            // Iterate over the records and generate HTML for card views
+            while ($row = $result->fetch_assoc()) {
+                ?>
+                <div class="col-4 mb-4">
+                    <div class="card">
+                   
+                       
+                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;margin-top:10px">
+        <img src="<?php echo $row['img_url']; ?>" class="img-fluid rounded-circle" style="max-width: 100%; max-height: 100%;" alt="User Image">
+    </div>                   <div class="card-body">   <h5 class="card-title"><?php echo $row['name']; ?></h5>
+                            <p class="card-text"><?php echo $row['feedback']; ?></p>
+                            <div class="rating">
+                                <?php
+                                // Generate star ratings based on the 'rating' value
+                                $rating = intval($row['rating']);
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i <= $rating) {
+                                      echo  '★';
+                                     
+                                    } else {
+                                      echo '☆';
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            echo "<p>No testimonials available.</p>";
+        }
+        ?>
+    </div>
    
+    <div class="text-center light-mode">
+    <a href="view_reviews.php" class="btn btn-success">View All Reviews</a>
+</div>
     </div>
 
-
     </div>
-    </div>
+    
 
 
     
-<footer class="text-center text-lg-start text-muted light-mode">
+<footer class="text-center text-lg-start text-muted light-mode p-3">
   
   <section class="">
-    <div class="container-fluid text-center text-md-start mt-5">
+    <div class="container-fluid text-center text-md-start ">
     
-      <div class="row mt-3">
+      <div class="row ">
       
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
          
@@ -326,6 +402,8 @@ Discover your dream tech job effortlessly with our user-friendly web app! Browse
 </footer>
 
 <script>
+
+
 $(document).ready(function(){
     $('#darkModeToggle').on('click', function(){
         $('div, footer').toggleClass('light-mode dark-mode');
@@ -364,13 +442,30 @@ $(document).ready(function(){
         $('#popupDialog').modal('show');
     <?php endif; ?>
 
+    
     $('#popupDialog').on('hidden.bs.modal', function () {
-        <?php $_SESSION['dialog'] = true; ?>
-    });
+    <?php $_SESSION['dialog'] = true; ?>
+});
+
 
 
     
 });
+
+
+function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Check if feedback_success parameter is set to true
+        var feedbackSuccess = getUrlParameter('feedback_success');
+        if (feedbackSuccess === 'true') {
+            // Display the alert message
+            alert('Thank you for your valuable feedback!');
+        }
 </script>
 </body>
 </html>
