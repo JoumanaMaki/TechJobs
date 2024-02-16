@@ -132,13 +132,13 @@ if(isset($_SESSION['login_id'])){
         <!-- Sidebar -->
         <nav id="sidebar" class="col-3 col-lg-2 light-mode">
             <div class="sidebar-sticky text-center">
-            <a class="navbar-brand light-mode m-2" href="#"><img src="./images/techjob_dK.png" id="logo" width="80px" height="80px" style="margin-top:30px" class="light-mode"></a>
+            <a class="navbar-brand light-mode m-2" href="dashboard_index.php"><img src="./images/techjob_dK.png" id="logo" width="80px" height="80px" style="margin-top:30px" class="light-mode"></a>
 
             <p class="light-mode fw-bold mt-3" >Welcome,<br>
                <?php echo $_SESSION['name']?></p>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                    <a class="nav-link dropdown-toggle light-mode" href="#" role="button" data-bs-toggle="dropdown">Jobs</a>
+                    <a class="nav-link dropdown-toggle light-mode" href="" role="button" data-bs-toggle="dropdown">Jobs</a>
                 <ul class="dropdown-menu light-mode">
                     <li><a class="dropdown-item light-mode" href="add_job.php">Add Job</a></li>
                     <li><a class="dropdown-item light-mode" href="view_jobs.php">View Jobs</a></li>
@@ -154,6 +154,14 @@ if(isset($_SESSION['login_id'])){
                     <a class="nav-link light-mode" href="locations.php" role="button" >Location</a>
                 
                     </li>
+
+
+                    
+                    <li class="nav-item">
+                    <a class="nav-link light-mode" href="reviews.php" role="button" >Reviews</a>
+                
+                    </li>
+
                     <li class="nav-item dropdown">
                 <a class="nav-link light-mode" href="types.php" role="button">Type</a>
               

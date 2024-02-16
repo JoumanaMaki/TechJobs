@@ -207,152 +207,84 @@ main {
 
         <!-- Main content -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-     
+        <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>Reviews</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Review</th>
+                            <th>Rating</th>
+                            <th>Is pulished</th>
 
-<div class="container mt-5">
-    <div class="row">
-        <?php
-    include "./db_config/connection.php";
-        // Query to get number of jobs
-        $result = $conn->query("SELECT COUNT(*) AS num_jobs FROM job");
-        $row = $result->fetch_assoc();
-        $numJobs = $row["num_jobs"];
-
-        // Query to get number of applicants
-        $result = $conn->query("SELECT COUNT(*) AS num_applicants FROM applicant");
-        $row = $result->fetch_assoc();
-        $numApplicants = $row["num_applicants"];
-
-        // Query to get number of users
-        $result = $conn->query("SELECT COUNT(*) AS num_users FROM user_login");
-        $row = $result->fetch_assoc();
-        $numUsers = $row["num_users"];
-
-        // Query to get number of reviews
-        $result = $conn->query("SELECT COUNT(*) AS num_reviews FROM review");
-        $row = $result->fetch_assoc();
-        $numReviews = $row["num_reviews"];
-
-        // Query to get latest 2 jobs
-        $result = $conn->query("SELECT * FROM job ORDER BY id DESC LIMIT 3");
-        $latestJobs = array();
-        while ($row = $result->fetch_assoc()) {
-            $latestJobs[] = $row;
-        }
-
-
-        $result = $conn->query("SELECT * FROM review ORDER BY id DESC LIMIT 3");
-        $latestReviews = array();
-        while ($row = $result->fetch_assoc()) {
-            $latestReviews[] = $row;
-        }
-
-        // Close database connection
-        $conn->close();
-        ?>
-
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                <h4 class="card-title"><i class='fas fa-user-alt' style='font-size:20px'></i> # of Jobs</h4>
-                <br>  <p class="card-text">Total: <?php echo $numJobs; ?></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                <h4 class><i class='far fa-address-card' style='font-size:20px'></i> # of Applicants</h4>
-              <p class="card-text">Total: <?php echo $numApplicants; ?></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                <h4 class="card-title"><i class='fas fa-user-alt' style='font-size:20px'></i> # of Users</h4>
-                <br>           <p class="card-text">Total: <?php echo $numUsers; ?></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                   <b> <h4 class="card-title"><i class='fas fa-comment' style='font-size:20px'></i> # of Reviews</h4></b>
-                   <br>    <p class="card-text">Total: <?php echo $numReviews; ?></p>
-                </div>
-            </div>
-        </div>
- 
-    <div class="row mt-5">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                Latest Jobs
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <?php foreach($latestJobs as $job): ?>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <img src="<?php echo $job['image_url']; ?>" alt="<?php echo $job['name']; ?>" style=" width:50px">
-                                <h5 class="card-title mt-3"><?php echo $job['name']; ?></h5>
-                                <p class="card-text">ID: <?php echo $job['id']; ?></p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="job_details.php?ID=<?php echo $job['id']; ?>" class="btn btn-primary">Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                Latest Reviews
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <?php foreach($latestReviews as $rev): ?>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <img src="<?php echo $rev['img_url']; ?>" alt="<?php echo $rev['name']; ?>" class="img-fluid mb-2" style="width:60px, height:100px">
-                                <p class="card-text"> <?php echo $rev['name']; ?></p>
-                          <br>     <?php
-                                // Generate star ratings based on the 'rating' value
-                                $rating = intval($rev['rating']);
-                                for ($i = 1; $i <= 5; $i++) {
-                                    if ($i <= $rating) {
-                                      echo  '★';
-                                     
-                                    } else {
-                                      echo '☆';
-                                    }
-                                }
-                                ?>                            </div>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            // Fetch reviews from the database
+                            $result = $conn->query("SELECT * FROM review");
                            
-                        </div>
+                            while ($row = $result->fetch_assoc()) {
+                                if($row['is_published'] ==1){
+                                    $publish = "Yes";
+                                }else{
+                                    $publish="No";
+                                }
+                                echo "<tr>";
+                                echo "<td>" . $row['id'] . "</td>";
+                                echo "<td>" . $row['name'] . "</td>";
+                                echo "<td><img src='" . $row['img_url'] . "' style='width:100px'></td>"; // Display image
+                                echo "<td>" . $row['feedback'] . "</td>";
+                                echo "<td>" . $row['rating'] . "</td>";
+                                echo "<td>" . $publish . "</td>";
+
+                                echo "<td>
+                                <a href='#' class='btn btn-primary edit-btn' 
+                                data-id='" . $row['id'] . "' 
+                                data-publish='" . $row['is_published'] . "' 
+                                data-toggle='modal' 
+                                data-target='#editModal'>Edit</a>  
+                                <a href='delete_review.php?id=" . $row['id'] . "' class='btn btn-danger'>Delete</a>
+                                      </td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="publish">Publish</label>
+                        <input type="checkbox" id="publish" name="publish">
                     </div>
-                    <?php endforeach; ?>
-                </div>
+                    <input type="hidden" id="editId" name="id">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-    </div>
-</div>
-
 
         </main>
     </div>
 </div>
-
 
 
 
@@ -368,6 +300,42 @@ $(document).ready(function(){
         var newsrc = current.includes('techjob_dK.png') ? 'images/tech_job_lg.png' : 'images/techjob_dK.png';
         Image.attr('src', newsrc);
     });
+
+
+
+    $('.edit-btn').on('click', function() {
+            var id = $(this).data('id');
+            var publish = $(this).data('publish');
+            $('#editId').val(id);
+            $('#publish').prop('checked', publish == 1);
+            $('#editModal').modal('show'); 
+        });
+
+        $('#editForm').submit(function(e) {
+            e.preventDefault();
+            var id = $('#editId').val();
+            var publish = $('#publish').prop('checked') ? 1 : 0;
+
+            $.ajax({
+                type: 'POST',
+                url: 'update_review.php',
+                data: {
+                    id: id,
+                    publish: publish
+                },
+                success: function(response) {
+                   
+                    $('#editModal').modal('hide');
+                    var $row = $('td:contains(' + id + ')').closest('tr');
+            var $publishCell = $row.find('td:nth-child(6)');
+            $publishCell.text(publish == 1 ? 'Yes' : 'No');
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                }
+            });
+        });
 });
 </script>
 </body>
