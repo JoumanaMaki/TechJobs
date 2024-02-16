@@ -185,7 +185,6 @@ if(isset($_SESSION['login_id'])){
        <center> <h2 class="light-mode">Jobs</h2></center>
        <div class="row mb-3 justify-content-end">
     <div class="col-md-2">
-        <!-- <label for="liveSearch" class="form-label light-mode">Live Search</label> -->
         <input type="text" class="form-control" id="liveSearch" placeholder="Search jobs...">
     </div>
 </div>
@@ -520,8 +519,6 @@ $(document).ready(function(){
 
     $('#liveSearch').on('input', function () {
         var searchText = $(this).val().toLowerCase();
-
-        // Loop through each row in the table and hide/show based on search text
         $('table tbody tr').each(function () {
             var rowText = $(this).text().toLowerCase();
             if (rowText.includes(searchText)) {
@@ -552,14 +549,11 @@ $('#typeFilter').on('change', function() {
 
 });
 function resetFilters() {
-    // Reset the values of all filter elements
     $('#liveSearch').val('');
     $('#majorFilter').val('');
     $('#locationFilter').val('');
     $('#typeFilter').val('');
     $('#is_published').prop('checked', false);
-
-    // Show all rows in the table
     $('table tbody tr').show();
 }
 
@@ -581,22 +575,19 @@ function saveEditJob() {
 
     var type_id = $('input[name="editJobType"]:checked').val();
 
-    // Check if a new image is selected
     var newImageFile = $('#editImage')[0].files[0];
 
-    // If a new image is selected, upload it; otherwise, use the existing image URL
     if (newImageFile) {
         var formData = new FormData();
         formData.append('image', newImageFile);
 
         $.ajax({
             type: 'POST',
-            url: 'upload_image.php',  // Adjust the URL for handling image uploads
+            url: 'upload_image.php',  
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
-                // Handle the response from the image upload (response should be the new image URL)
                 var image_url = response;
 
                 updateJobDetails(id, name, company_name, email, phone, salary, requirements, objectives,
@@ -633,7 +624,6 @@ function updateJobDetails(id, name, company_name, email, phone, salary, requirem
             image_url: image_url,
             type_id: type_id
         });
-    // Perform the AJAX request to update the job details
     $.ajax({
         type: 'POST',
         url: 'edit_job.php',
@@ -656,8 +646,6 @@ function updateJobDetails(id, name, company_name, email, phone, salary, requirem
         success: function (response) {
             const data = JSON.parse(response);
 
-
-            // Update the edited row in the table
             var editedRow = $("#locationRow_" + id);
        
             editedRow.find('td:eq(1)').text(name);
@@ -678,7 +666,6 @@ function updateJobDetails(id, name, company_name, email, phone, salary, requirem
             $('#editJobModal').modal('hide');
         },
         error: function (error) {
-            // Handle the error if needed
             console.error(error);
         }
     });

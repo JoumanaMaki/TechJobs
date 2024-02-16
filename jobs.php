@@ -149,85 +149,74 @@
     <div class="container-fluid text-center">
         <h1 style="font-family: 'Playfair Display', serif; font-weight: bold;">All Jobs</h1>
     
-        <form id ="jobFilters" class="row mb-3 mt-5" method="get" action="">
-            <div class="col-md-3">
-                <label for="majorFilter" class="form-label light-mode fw-bold">Filter by Major:</label>
-                <select class="form-select light-mode" id="majorFilter" name="major">
-                    <option value="">All Majors</option>
-                    <?php
-                    $majorQuery = "SELECT * FROM major";
-                    $majorResult = $conn->query($majorQuery);
-    
-                    while ($majorRow = $majorResult->fetch_assoc()) {
-                        echo "<option value='{$majorRow['id']}'>{$majorRow['name']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-    
-            <div class="col-md-3">
-                <label for="cityFilter" class="form-label light-mode fw-bold">Filter by City:</label>
-                <select class="form-select light-mode" id="cityFilter" name="city">
-                    <option value="">All Cities</option>
-                    <?php
-                    $cityQuery = "SELECT * FROM city";
-                    $cityResult = $conn->query($cityQuery);
-    
-                    while ($cityRow = $cityResult->fetch_assoc()) {
-                        echo "<option value='{$cityRow['id']}'>{$cityRow['name']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-    
-            <div class="col-md-3">
-                <label for="typeFilter" class="form-label light-mode fw-bold">Filter by Type:</label>
-                <select class="form-select light-mode" id="typeFilter" name="type">
-                    <option value="">All Types</option>
-                    <?php
-                    $typeQuery = "SELECT * FROM type";
-                    $typeResult = $conn->query($typeQuery);
-    
-                    while ($typeRow = $typeResult->fetch_assoc()) {
-                        echo "<option value='{$typeRow['id']}'>{$typeRow['name']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-    
-            <div class="col-md-3">
-                <button type="button" class="btn btn-secondary light-mode" onclick="resetFilters()">Reset Filters</button>
-            </div>
-        </form>
-    
+<div class="row mb-3 justify-content-start">
+    <div class="col-md-3">
+        <label for="majorFilter" class="form-label light-mode">Major Filter</label>
+        <select class="form-select" id="majorFilter">
+            <option value="">All Majors</option>
+            <?php
+                $majorQuery = "SELECT * FROM major";
+                $majorResult = mysqli_query($conn, $majorQuery);
+                while ($majorRow = mysqli_fetch_assoc($majorResult)) {
+                    echo "<option value='{$majorRow['id']}'>{$majorRow['name']}</option>";
+                }
+            ?>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="locationFilter" class="form-label light-mode">Location Filter</label>
+        <select class="form-select" id="locationFilter">
+            <option value="">All Locations</option>
+            <?php
+                // Fetch locations from the database and populate the dropdown
+                $locationQuery = "SELECT * FROM city";
+                $locationResult = mysqli_query($conn, $locationQuery);
+                while ($locationRow = mysqli_fetch_assoc($locationResult)) {
+                    echo "<option value='{$locationRow['id']}'>{$locationRow['name']}</option>";
+                }
+            ?>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="typeFilter" class="form-label light-mode">Type Filter</label>
+        <select class="form-select" id="typeFilter">
+            <option value="">All Types</option>
+            <?php
+                $typeQuery = "SELECT * FROM type";
+                $typeResult = mysqli_query($conn, $typeQuery);
+                while ($typeRow = mysqli_fetch_assoc($typeResult)) {
+                    echo "<option value='{$typeRow['id']}'>{$typeRow['name']}</option>";
+                }
+            ?>
+        </select>
+    </div>
+
+            <div class="col-md-2 mt-3">
+           
+         
+            <button class="btn btn-secondary" onclick="resetFilters()">Reset Filters</button>
+          
+       </div>  
         <?php
         $sql = "SELECT * FROM job WHERE is_published = 1";
-        if (isset($_GET['major']) && !empty($_GET['major'])) {
-            $major = $_GET['major'];
-            $sql .= " AND major_id = '$major'";
-        }
-    
-        if (isset($_GET['city']) && !empty($_GET['city'])) {
-            $city = $_GET['city'];
-            $sql .= " AND city_id = '$city'";
-        }
-    
-        if (isset($_GET['type']) && !empty($_GET['type'])) {
-            $type = $_GET['type'];
-            $sql .= " AND type_id = '$type'";
-        }
     
         $result = $conn->query($sql);
        
         if ($result->num_rows > 0) {
             echo '<div class="row row-cols-1 row-cols-md-3 mt-3">';
             while ($row = $result->fetch_assoc()) {
-                echo "<div class='card col-4 m-5' style='width: 18rem; cursor: pointer;' >";
+               
+                echo "<div class='card col-4 m-5' style='width: 18rem; cursor: pointer;' 
+                data-major-id='{$row['major_id']}' 
+                data-city-id='{$row['city_id']}' 
+                data-type-id='{$row['type_id']}' >";
+             
                 echo "<img class='card-img-top' src='{$row['image_url']}' height='300px' alt='Card image cap' onclick='location.href=\"details.php?id={$row['id']}\"'>";
                 echo "<div class='card-body'>";
                 echo "<h5 class='card-title'>{$row['name']}</h5>";
                 echo "<p class='card-text'>{$row['description']}</p>";
-                echo "<a href='#' class='btn btn-success' onclick='openApplyModal({$row['id']})'>Go somewhere</a>";
+                echo "<a href='#' class='btn btn-success' onclick='openApplyModal({$row['id']})'>Apply</a>";
+                
                 echo "</div></div>";
             }
             echo '</div>';
@@ -238,7 +227,6 @@
         $conn->close();
         ?>
     </div>
-    
 
     <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -350,13 +338,41 @@
                 Image.attr('src', newsrc);
             });
 
-            $('#majorFilter, #cityFilter, #typeFilter').change(function () {
-                if (!$(this).closest('form').is('#apply')) {
-                    $(this).closest('#jobFilters').submit();
+        });
+
+
+
+        
+        $(document).ready(function(){
+            // Dark mode toggle and other JavaScript functionalities
+        });
+
+        function filterJobs() {
+            var majorFilter = $("#majorFilter").val();
+            var cityFilter = $("#locationFilter").val();
+            var typeFilter = $("#typeFilter").val();
+            $(".card").each(function() {
+                var majorId = $(this).data("major-id");
+                var cityId = $(this).data("city-id");
+                var typeId = $(this).data("type-id");
+
+                if ((majorFilter === "" || majorId == majorFilter) &&
+                    (cityFilter === "" || cityId == cityFilter) &&
+                    (typeFilter === "" || typeId == typeFilter)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
                 }
             });
-            });
-    
+        }
+
+        // Bind change events to the filter elements
+        $("#majorFilter, #locationFilter, #typeFilter").change(function() {
+            filterJobs();
+        });
+
+        // Call the filter function initially to show jobs based on default criteria
+        filterJobs();
             function openApplyModal(jobId) {
     <?php if (isset($_SESSION['login_id'])) : ?>
         // Check if the user has already applied for this job
@@ -392,11 +408,10 @@
     <?php endif; ?>
 }
 
-
-        function resetFilters() {
-            $('#majorFilter, #cityFilter, #typeFilter').val('');
-            $('#jobFilters').submit();
-        }
+function resetFilters() {
+    $('#majorFilter, #locationFilter, #typeFilter').val('');
+    filterJobs();
+}
     </script>
 </body>
 </html>
