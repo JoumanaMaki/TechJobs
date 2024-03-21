@@ -15,20 +15,17 @@ $jobName = $_POST['jobName'];
 $mail = new PHPMailer(true);
 
 try {
-    // Server settings
     $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';  // Set your SMTP host
+    $mail->Host = 'smtp.gmail.com'; 
     $mail->SMTPAuth = true;
-    $mail->Username = 'joumana.maki@gmail.com'; // Set your SMTP username
-    $mail->Password = 'aymg aavg slwa skrm'; // Set your SMTP password
-    $mail->SMTPSecure = 'tls'; // Enable TLS encryption, 'ssl' also accepted
-    $mail->Port = 587; // TCP port to connect to
+    $mail->Username = 'joumana.maki@gmail.com'; 
+    $mail->Password = 'aymg aavg slwa skrm'; 
+    $mail->SMTPSecure = 'tls'; 
+    $mail->Port = 587; 
 
-    // Recipients
     $mail->setFrom('joumana.maki@gmail.com', 'Jobs Tech'); 
-    $mail->addAddress($toEmail); // Add recipient email
-
-    // Content
+    $mail->addAddress($toEmail); 
+    
     $mail->isHTML(true);
     $mail->Subject = 'Job Application Accepted';
     $mail->Body = 'Congratulations! Your application for the job <strong>' . $jobName . '</strong> has been accepted.';
