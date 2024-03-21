@@ -140,9 +140,10 @@ if(isset($_SESSION['login_id'])){
 </head>
 <body>
 
+<?php 
+if (isset($_SESSION['login_id']) && $_SESSION['dialog'] === false): 
+?>
 
-<!-- Add the popup dialog HTML markup -->
-<?php if ($_SESSION['dialog'] === false): ?>
     <div id="popupDialog" class="modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
